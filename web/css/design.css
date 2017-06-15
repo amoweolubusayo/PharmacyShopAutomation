@@ -1,0 +1,121 @@
+.active{
+    background-color: #bce8f1;
+}
+
+.bdy{
+    background-image: url(../img/drug.jpg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+.bd
+{
+    border-radius: 0px;
+}
+.btn{
+    color: #fff;
+    background-color: #d9edf7;
+    border-color: #bce8f1;
+}
+h3{
+    color: white;
+}
+h1{
+    color: white;
+}
+.animate{
+   animation-name: text;
+    animation-duration: 5s;
+    animation-delay: 2s;
+    animation-iteration-count: 1000;
+}
+@-webkit-keyframes text {
+    0% {color: white;}
+    25% {color: #bce8f1;}
+    50%{color: #1ab7ea;}
+    100%{color: #f8f8f8;}
+}
+.modal-body{
+    -webkit-border-radius:0px;
+    -moz-border-radius:0px;
+    border-radius:0px;
+
+
+}
+.modal-header{
+    background-color: bisque;
+}
+.modal-content{
+    width:350px;
+    border-radius:0px;
+}
+.modal-footer{
+
+}
+.bn{
+    background-color: bisque;
+    border-color: bisque;
+}
+.sidenav {
+    height: 100%; /* 100% Full-height */
+    width: 0; /* 0 width - change this with JavaScript */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Stay on top */
+    top: 0;
+    left: 0;
+    background-color: #111; /* Black*/
+    overflow-x: hidden; /* Disable horizontal scroll */
+    padding-top: 60px; /* Place content 60px from the top */
+    transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+}
+
+/* The navigation menu links */
+.sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s
+}
+
+/* When you mouse over the navigation links, change their color */
+.sidenav a:hover, .offcanvas a:focus{
+    color: #f1f1f1;
+}
+
+/* Position and style the close button (top right corner) */
+.sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+
+/* Style page content - use this if you want to push the page content to the right when you open the side navigation */
+#main {
+    transition: margin-left .5s;
+    padding: 20px;
+}
+
+/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+@media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+    .sidenav a {font-size: 18px;}
+}
+/*Center Brand*/
+nav.sidebar.navbar.sidebar>.container .navbar-brand, .navbar>.container-fluid .navbar-brand {
+    margin-left: 0px;
+}
+/*Center Brand*/
+nav.sidebar .navbar-brand, nav.sidebar .navbar-header{
+    text-align: center;
+    width: 100%;
+    margin-left: 0px;
+}
+
+/*Center Icons*/
+nav.sidebar a{
+    padding-right: 13px;
+}
