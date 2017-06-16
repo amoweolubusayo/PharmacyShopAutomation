@@ -1,6 +1,7 @@
 package main.java.com.pharmacyshopautomation.models;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 public class Staff {
@@ -13,6 +14,29 @@ public class Staff {
     public String address;
     public String phonenumber;
     public String staffemail;
+    public String role;
+    public Date dataemployed;
+    public String staffusername;
+    public String staffpassword;
+    public String gender;
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+
 
     public int getId() {
         return id;
@@ -70,11 +94,11 @@ public class Staff {
         this.staffemail = staffemail;
     }
 
-    public String getDataemployed() {
+    public Date getDataemployed() {
         return dataemployed;
     }
 
-    public void setDataemployed(String dataemployed) {
+    public void setDataemployed(Date dataemployed) {
         this.dataemployed = dataemployed;
     }
 
@@ -94,7 +118,5 @@ public class Staff {
         this.staffpassword = staffpassword;
     }
 
-    public String dataemployed;
-    public String staffusername;
-    public String staffpassword;
+
 }

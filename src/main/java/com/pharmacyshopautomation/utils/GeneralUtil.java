@@ -1,10 +1,13 @@
 package main.java.com.pharmacyshopautomation.utils;
 
 import main.java.com.pharmacyshopautomation.models.Admin;
+import main.java.com.pharmacyshopautomation.models.Staff;
 import main.java.persistence.HibernateUtil;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+
+import java.util.List;
 
 /**
  * Created by USER on 6/12/2017.
@@ -58,4 +61,27 @@ public class GeneralUtil {
         }
         return result;
     }
+    public static boolean checkIfUserExists(String staffusername) {
+        boolean result = false;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            Query query = session.createQuery("from Staff r  where r.staffusername=:staffusername");
+            query.setParameter("staffusername", staffusername);
+            Staff e = (Staff) query.uniqueResult();
+            if (e != null) {
+                result = true;
+            }
+
+        } catch (Exception ex) {
+            if (tx != null) {
+                tx.rollback();
+            }
+        } finally {
+            session.close();
+        }
+        return result;
+    }
+
 }

@@ -29,7 +29,7 @@
                   <p id="info">${requestScope["issues"]}</p>
               </div>
               <div class="modal-footer">
-                  <button type="button" class="btn bn" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn bn" data-dismiss="modal" style="border-radius: 0px">Continue</button>
               </div>
           </div>
       </div>
@@ -54,14 +54,14 @@
                 <label for="username" class="sr-only">Username</label>
                 <div class="input-group">
                   <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i> </span>
-                  <input type="text" class="form-control" id="username" name="username" placeholder="Username" value="" required onblur="toUpperCase(this)">
+                  <input type="text" autocomplete="off" class="form-control" id="username" name="username" placeholder="Username" value="" required onblur="toUpperCase(this)">
                 </div>
               </div>
               <div class="form-group">
                 <label for="password" class="sr-only">Password</label>
                 <div class="input-group">
                   <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i> </span>
-                  <input type="password" class="form-control" id="password" name="password" placeholder="Password" value="" required onblur="toUpperCase(this)">
+                  <input type="password"  autocomplete="off" class="form-control" id="password" name="password" placeholder="Password" value="" required onblur="toUpperCase(this)">
                 </div>
               </div>
                 <p class="text-danger notice">

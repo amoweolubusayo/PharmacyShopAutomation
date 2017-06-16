@@ -47,4 +47,7 @@ public class Admin {
     public void setEnabled(boolean enabled) {
         isEnabled = enabled;
     }
+
+    public void isEnabled(boolean b) {
+    }
 }

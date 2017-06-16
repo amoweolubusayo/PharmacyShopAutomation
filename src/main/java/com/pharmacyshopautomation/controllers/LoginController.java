@@ -28,7 +28,7 @@ public class LoginController extends HttpServlet{
             current_user = GeneralUtil.getAdminByUserName(username);
         } catch (Exception e) {
 
-            System.out.println("WAHALA!!!!  :" + e.getMessage());
+            System.out.println(e.getMessage());
         }
         if (current_user == null) {
             System.out.println("this is me");
@@ -62,7 +62,7 @@ public class LoginController extends HttpServlet{
             System.out.println("logged in");
             Admin admin = current_user;
             session.setAttribute("current_user", admin);
-            request.setAttribute("issues", "Successful");
+            request.setAttribute("issues", "Welcome");
             rd = request.getRequestDispatcher("admindashboard.jsp");
             rd.forward(request, response);
             return;

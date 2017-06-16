@@ -15,7 +15,10 @@
 
 
     </style>
+    <script>
 
+
+    </script>
 </head>
 <body>
 
@@ -38,10 +41,10 @@
                     <a data-toggle="collapse" data-target="#staff"> Staff <i class="fa fa-caret-down"></i></a>
                     <ul id="staff" class="collapse">
                         <li class="active nav" style="margin-left: 50px"><i class="fa fa-plus" style="color: white"></i>
-                            <a href="../staffpages/addstaff.jsp" class="tilliknwwhyunderlinedecorationstillshows">Add </a>
+                            <a href="/staffpages/addstaff.jsp" class="tilliknwwhyunderlinedecorationstillshows">Add </a>
                         </li>
                         <li class="active nav" style="margin-left: 50px"><i class="fa fa-wrench" style="color: white"></i>
-                            <a href="../staffpages/editstaff.jsp" class="tilliknwwhyunderlinedecorationstillshows">Edit</a></li>
+                            <a href="/staffpages/editstaff.jsp" class="tilliknwwhyunderlinedecorationstillshows">Edit</a></li>
 
                     </ul>
                 </li>
@@ -78,12 +81,12 @@
         </div>
     </div>
 
-    <div class="main-panel">
-        <div class="col-sm-10 col-sm-offset-0">
-            <h2>ADD STAFF</h2>
-            <form id="first">
-                <div class="col-lg-6">
 
+    <div class="main-panel">
+        <div class="col-sm-10 col-sm-offset-0" id="editinfo">
+            <h2>EDIT STAFF</h2>
+            <form id="second">
+                <div class="col-lg-6">
                     <input type="text" class="form-control" placeholder="Enter name" name="staffname"/>
                     <select class="form-control">
                         <option value="">Select Gender</option>
@@ -158,7 +161,6 @@
 
 
     </div>
-
 </div>
 
 <script src="../js/jquery.min.js"></script>

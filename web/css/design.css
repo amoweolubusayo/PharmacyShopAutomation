@@ -1,6 +1,8 @@
 .active{
-    background-color: #bce8f1;
+    background-color: #1ab7ea;
 }
+
+
 
 .bdy{
     background-image: url(../img/drug.jpg);
@@ -118,4 +120,11 @@ nav.sidebar .navbar-brand, nav.sidebar .navbar-header{
 /*Center Icons*/
 nav.sidebar a{
     padding-right: 13px;
+}
+.form-control{
+    box-shadow: none;
+    border-radius: 0px;
+}
+.tilliknwwhyunderlinedecorationstillshows:hover .tilliknwwhyunderlinedecorationstillshows:focus{
+    text-decoration: none;
 }
