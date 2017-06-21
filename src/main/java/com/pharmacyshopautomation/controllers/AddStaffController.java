@@ -1,12 +1,10 @@
 package main.java.com.pharmacyshopautomation.controllers;
-
 import main.java.com.pharmacyshopautomation.models.Admin;
 import main.java.com.pharmacyshopautomation.models.Staff;
 import main.java.com.pharmacyshopautomation.utils.GeneralUtil;
 import main.java.persistence.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -67,7 +65,7 @@ public class AddStaffController extends HttpServlet {
         staff.setStaffname(staffname);
         staff.setGender(gender);
         staff.setAddress(address);
-        staff.setDataemployed(doe);
+        staff.setDateemployed(doe);
         staff.setPhonenumber(phonenumber);
         staff.setMaritalstatus(maritalstatus);
         staff.setStaffemail(email);
@@ -86,7 +84,6 @@ public class AddStaffController extends HttpServlet {
                 tx = session.beginTransaction();
                 session.save(staff);
                 session.save(admin);
-
                 tx.commit();
                 request.setAttribute("issues", "Staff with username" + "'" + username + "'" + " Successfully Created");
                 rd = request.getRequestDispatcher("admindashboard.jsp");

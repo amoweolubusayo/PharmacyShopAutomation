@@ -21,6 +21,12 @@
         <servlet-name>AddStaffController</servlet-name>
         <servlet-class>main.java.com.pharmacyshopautomation.controllers.AddStaffController</servlet-class>
     </servlet>
+    <servlet>
+        <description></description>
+        <display-name>ServiceUtilController</display-name>
+        <servlet-name>ServiceUtilController</servlet-name>
+        <servlet-class>main.java.com.pharmacyshopautomation.controllers.ServiceUtilController</servlet-class>
+    </servlet>
 
     <!--mapping-->
     <servlet-mapping>
@@ -34,6 +40,10 @@
     <servlet-mapping>
         <servlet-name>AddStaffController</servlet-name>
         <url-pattern>/AddStaffController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServiceUtilController</servlet-name>
+        <url-pattern>/ServiceUtilController</url-pattern>
     </servlet-mapping>
 
 </web-app>

@@ -7,6 +7,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -83,5 +84,44 @@ public class GeneralUtil {
         }
         return result;
     }
+    public static List getAllStaffbyId(){
+        List result = new ArrayList();
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+        try{
+            tx = session.beginTransaction();
+            String hql = "FROM Staff ";
+            Query query = session.createQuery(hql);
+            result = query.list();
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return result;
+    }
+    public static Staff getStaffById(String staffid) {
+        Staff staff = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            String hql = "FROM Staff u where u.staffid =:staffid";
+            Query query = session.createQuery(hql);
+            query.setParameter("staffid", staffid);
+            staff = (Staff) query.list().get(0);
 
+            System.out.println("got here first");
+
+        } catch (Exception ex) {
+            if (tx != null) {
+                tx.rollback();
+            }
+        } finally {
+            session.close();
+        }
+
+        return staff;
+    }
 }

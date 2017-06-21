@@ -1,3 +1,6 @@
+<%@ page import="java.util.List" %>
+<%@ page import="main.java.com.pharmacyshopautomation.utils.GeneralUtil" %>
+<%@ page import="main.java.com.pharmacyshopautomation.models.Staff" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <html>
@@ -18,6 +21,12 @@
 
 </head>
 <body>
+<%
+    try
+    {
+        List result = GeneralUtil.getAllStaffbyId();
+
+%>
 <div id="myModalDialog" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -41,8 +50,9 @@
 
     <div class="sidebar" data-color="purple">
         <div class="logo">
-
+            <span style="margin-left: 40px; font-size: 25px; color: white">DASHBOARD</span>
         </div>
+
 
 
         <div class="sidebar-wrapper">
@@ -183,35 +193,48 @@
     <div class="main-panel" style="display: none" id="editinfo">
         <div class="col-sm-10 col-sm-offset-0">
             <h2 style="color: #1ab7ea">EDIT STAFF</h2>
-            <form id="second">
-                <div class="col-lg-6">
-                    <input type="text" class="form-control" placeholder="Enter name" name="staffname" onblur="toUpperCase(this)"/>
-                    <select class="form-control">
-                        <option value="">Select Gender</option>
-                        <option value="MALE">MALE</option>
-                        <option value="FEMALE">FEMALE</option>
+            <form>
+                <div class="col-lg-5">
+                    <select class="form-control" name="staffid" id="staffid">
+                        <option value="">STAFF ID</option>
+                        <%
+                            for(int i = 0; i<result.size(); i++){
+                        %>
+                        <option value="<%=((Staff) result.get(i)).getStaffid()%>"><%=((Staff) result.get(i)).getStaffid()%></option>
+                       <%
+                        }
+                        %>
                     </select>
-                    <input type="text" class="form-control" placeholder="Enter address" name="address" onblur="toUpperCase(this)"/>
-                    <input type="date" class="form-control" placeholder="Date employed" name="dateemployed"/>
-                    <input type="text" class="form-control" placeholder="Enter phonenumber" name="phonenumber"/>
-                </div>
-                <div class="col-lg-6">
-                    <input type="email" class="form-control" placeholder="Enter email" name="email" onblur="toUpperCase(this)"/>
-                    <select class="form-control">
+                    <input type="text" class="form-control" placeholder="Enter name" name="staffname" id="staffname" onblur="toUpperCase(this)"/>
+                    <select class="form-control" name="maritalstatus" id="maritalstatus">
                         <option value="">Select Marital Status</option>
                         <option value="SINGLE">SINGLE</option>
                         <option value="MARRIED">MARRIED</option>
                     </select>
-                    <input type="text" class="form-control" placeholder="Assign username" name="username" onblur="toUpperCase(this)" />
-                    <input type="text" class="form-control" placeholder="Assign password" name="password" onblur="toUpperCase(this)"/>
-                    <select class="form-control">
+                    <input type="text" class="form-control" placeholder="Assign username" id="username" name="username" onblur="toUpperCase(this)" />
+                    <input type="text" class="form-control" placeholder="Assign password" id="password" name="password" onblur="toUpperCase(this)"/>
+                    <select class="form-control" name="position" id="position">
                         <option value="">Select Position</option>
                         <option value="SUPERVISOR">SUPERVISOR</option>
                         <option value="ATTENDANT">ATTENDANT</option>
                     </select>
+
+                        <input type="submit" value="edit" class="btn btn-info"/>
+
                 </div>
-                <div class="col-sm-6">
-                    <input type="submit" value="submit" class="btn btn-info"/>
+
+                <div class="col-lg-5">
+                    <input type="button" class="btn-block btn btn-lg btn-info" style="border-radius: 0px;" value="Check Details" onclick="searchStaff();"/>
+                    <input type="email" class="form-control" placeholder="Enter email" name="email" onblur="toUpperCase(this)" id="email"/>
+
+                    <select class="form-control" name="gender" id="gender">
+                        <option value="">Select Gender</option>
+                        <option value="MALE">MALE</option>
+                        <option value="FEMALE">FEMALE</option>
+                    </select>
+                    <input type="text" class="form-control" placeholder="Enter address" name="address" id="address"  onblur="toUpperCase(this)"/>
+                    <input type="date" class="form-control" placeholder="Date employed" name="dateemployed" id="dateemployed"/>
+                    <input type="text" class="form-control" placeholder="Enter phonenumber" name="phonenumber" id="phonenumber"/>
                 </div>
             </form>
 
@@ -285,7 +308,48 @@
             $("#addinfo").hide();
         });
     });
+    function searchStaff(){
+
+        var staffid = document.getElementById("staffid").value;
+        alert(staffid);
+        if(staffid!=""){
+            $.getJSON('/ServiceUtilController',{"operation":"2","staffid":staffid}, function (jd) {
+                var Name = jd.Name;
+                alert(Name);
+                var Email = jd.Email;
+                alert(Email);
+                var MaritalStatus = jd.MaritalStatus;
+                var Gender = jd.Gender;
+                var Username = jd.Username;
+                var Address = jd.Address;
+                var Password = jd.Password;
+                var Position = jd.Position;
+                alert(Position);
+                var Date = jd.Date;
+                alert(Date);
+                 var D = Date.split(' ');
+                 alert(D);
+                var Phonenumber = jd.Phonenumber;
+                document.getElementById("staffname").value =Name;
+                document.getElementById("maritalstatus").value =MaritalStatus;
+                document.getElementById("username").value =Username;
+                document.getElementById("password").value =Password;
+                document.getElementById("position").value =Position;
+                document.getElementById("email").value =Email;
+                document.getElementById("gender").value =Gender;
+                document.getElementById("address").value =Address;
+                document.getElementById("dateemployed").value =Date;
+                document.getElementById("phonenumber").value =Phonenumber;
+            });
+        }
+    }
 </script>
+<%
+    }
+catch(Exception ex){
+        ex.printStackTrace();
+    }
+%>
 </body>
 
 </html>

@@ -15,7 +15,7 @@ public class Staff {
     public String phonenumber;
     public String staffemail;
     public String role;
-    public Date dataemployed;
+    public Date dateemployed;
     public String staffusername;
     public String staffpassword;
     public String gender;
@@ -94,12 +94,12 @@ public class Staff {
         this.staffemail = staffemail;
     }
 
-    public Date getDataemployed() {
-        return dataemployed;
+    public Date getDateemployed() {
+        return dateemployed;
     }
 
-    public void setDataemployed(Date dataemployed) {
-        this.dataemployed = dataemployed;
+    public void setDateemployed(Date dateemployed) {
+        this.dateemployed = dateemployed;
     }
 
     public String getStaffusername() {
