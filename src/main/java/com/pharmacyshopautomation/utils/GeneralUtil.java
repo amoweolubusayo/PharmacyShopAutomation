@@ -124,4 +124,31 @@ public class GeneralUtil {
 
         return staff;
     }
+    public static Staff checkIfStaffExists(String staffid) {
+        Staff result = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tnx = null;
+        try {
+            tnx = session.beginTransaction();
+            Query query = session.createQuery("from Staff c where c.staffid=:staffid");
+            query.setParameter("staffid", staffid);
+            Staff c = (Staff) query.uniqueResult();
+            System.out.println("I am : " + c);
+            if (c != null) {
+                result = c;
+            }
+
+        } catch (Exception ex) {
+            if (tnx != null) {
+                tnx.rollback();
+            }
+
+            ex.printStackTrace();
+        } finally {
+            session.close();
+        }
+
+        return result;
+
+    }
 }

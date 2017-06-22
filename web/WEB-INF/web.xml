@@ -27,6 +27,12 @@
         <servlet-name>ServiceUtilController</servlet-name>
         <servlet-class>main.java.com.pharmacyshopautomation.controllers.ServiceUtilController</servlet-class>
     </servlet>
+    <servlet>
+        <description></description>
+        <display-name>EditStaffController</display-name>
+        <servlet-name>EditStaffController</servlet-name>
+        <servlet-class>main.java.com.pharmacyshopautomation.controllers.EditStaffController</servlet-class>
+    </servlet>
 
     <!--mapping-->
     <servlet-mapping>
@@ -44,6 +50,10 @@
     <servlet-mapping>
         <servlet-name>ServiceUtilController</servlet-name>
         <url-pattern>/ServiceUtilController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditStaffController</servlet-name>
+        <url-pattern>/EditStaffController</url-pattern>
     </servlet-mapping>
 
 </web-app>

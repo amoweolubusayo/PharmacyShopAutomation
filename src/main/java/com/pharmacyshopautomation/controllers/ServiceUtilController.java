@@ -48,7 +48,7 @@ public class ServiceUtilController extends HttpServlet {
             System.out.println(staff.getMaritalstatus());
             System.out.println(staff.getStaffemail());
             System.out.println(staff.getRole());
-            System.out.println(staff.getDateemployed());
+            System.out.println(staff.getDateemployed().toString());
 
         }
         catch (JSONException e) {
