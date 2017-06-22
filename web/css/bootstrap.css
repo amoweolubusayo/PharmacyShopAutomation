@@ -1145,10 +1145,7 @@ img {
   border-radius: 50%;
 }
 hr {
-  margin-top: 20px;
-  margin-bottom: 20px;
   border: 0;
-  border-top: 1px solid #eee;
 }
 .sr-only {
   position: absolute;
@@ -5456,7 +5453,7 @@ button.list-group-item-danger.active:focus {
 }
 .panel-body {
   padding: 15px;
-  background-color: blanchedalmond;
+  background-color: #fff;
 }
 .panel-heading {
   padding: 10px 15px;

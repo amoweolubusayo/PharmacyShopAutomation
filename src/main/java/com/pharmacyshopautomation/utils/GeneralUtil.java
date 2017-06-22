@@ -1,7 +1,7 @@
 package main.java.com.pharmacyshopautomation.utils;
 
-import main.java.com.pharmacyshopautomation.models.Admin;
-import main.java.com.pharmacyshopautomation.models.Staff;
+import main.java.com.pharmacyshopautomation.models.*;
+
 import main.java.persistence.HibernateUtil;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -84,6 +84,52 @@ public class GeneralUtil {
         }
         return result;
     }
+
+    public static boolean checkIfDrugCategoryExists(String category) {
+        boolean result = false;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            Query query = session.createQuery("from DrugCategory  r where r.category=:category");
+            query.setParameter("category", category);
+            DrugCategory e = (DrugCategory) query.uniqueResult();
+            if (e != null) {
+                result = true;
+            }
+
+        } catch (Exception ex) {
+            if (tx != null) {
+                tx.rollback();
+            }
+        } finally {
+            session.close();
+        }
+        return result;
+    }
+    public static boolean checkIfDrugExists(String drugid) {
+        boolean result = false;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            Query query = session.createQuery("from Drug  r where r.drugid=:drugid");
+            query.setParameter("drugid", drugid);
+            Drug e = (Drug) query.uniqueResult();
+            if (e != null) {
+                result = true;
+            }
+
+        } catch (Exception ex) {
+            if (tx != null) {
+                tx.rollback();
+            }
+        } finally {
+            session.close();
+        }
+        return result;
+    }
+
     public static List getAllStaffbyId(){
         List result = new ArrayList();
         Session session = HibernateUtil.getSessionFactory().openSession();
@@ -91,6 +137,23 @@ public class GeneralUtil {
         try{
             tx = session.beginTransaction();
             String hql = "FROM Staff ";
+            Query query = session.createQuery(hql);
+            result = query.list();
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return result;
+    }
+    public static List getAllDrugCategories(){
+        List result = new ArrayList();
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+        try{
+            tx = session.beginTransaction();
+            String hql = "FROM DrugCategory ";
             Query query = session.createQuery(hql);
             result = query.list();
         }

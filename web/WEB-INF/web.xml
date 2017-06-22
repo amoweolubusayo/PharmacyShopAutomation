@@ -33,6 +33,12 @@
         <servlet-name>EditStaffController</servlet-name>
         <servlet-class>main.java.com.pharmacyshopautomation.controllers.EditStaffController</servlet-class>
     </servlet>
+    <servlet>
+        <description></description>
+        <display-name>Add</display-name>
+        <servlet-name>AddDrugCategoryController</servlet-name>
+        <servlet-class>main.java.com.pharmacyshopautomation.controllers.AddDrugCategoryController</servlet-class>
+    </servlet>
 
     <!--mapping-->
     <servlet-mapping>
@@ -54,6 +60,10 @@
     <servlet-mapping>
         <servlet-name>EditStaffController</servlet-name>
         <url-pattern>/EditStaffController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddDrugCategoryController</servlet-name>
+        <url-pattern>/AddDrugCategoryController</url-pattern>
     </servlet-mapping>
 
 </web-app>

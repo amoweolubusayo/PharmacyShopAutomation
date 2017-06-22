@@ -474,7 +474,7 @@ h2.title {
 }
 .sidebar .nav li:hover > a,
 .off-canvas-sidebar .nav li:hover > a {
-  background: rgba(200, 200, 200, 0.2);
+  background: #1ab7ea;
   color: #3C4858;
 }
 .sidebar .nav li.active > a,
@@ -539,7 +539,7 @@ h2.title {
   right: 10%;
   height: 1px;
   width: 80%;
-  background-color: rgba(180, 180, 180, 0.3);
+
 }
 .sidebar .logo p,
 .off-canvas-sidebar .logo p {
@@ -2342,45 +2342,8 @@ select.form-control[multiple], .form-group.is-focused select.form-control[multip
   padding-left: 65px;
 }
 
-.table > thead > tr > th {
-  border-bottom-width: 1px;
-  font-size: 1em;
-  font-weight: 300;
-}
-.table .radio,
-.table .checkbox {
-  margin-top: 0;
-  margin-bottom: 0;
-  margin-left: 10px;
-  padding: 0;
-  width: 15px;
-}
-.table .radio .icons,
-.table .checkbox .icons {
-  position: relative;
-}
-.table > thead > tr > th,
-.table > tbody > tr > th,
-.table > tfoot > tr > th,
-.table > thead > tr > td,
-.table > tbody > tr > td,
-.table > tfoot > tr > td {
-  padding: 12px 8px;
-  vertical-align: middle;
-}
-.table > thead > tr > th {
-  padding-bottom: 4px;
-}
-.table .td-actions {
-  display: flex;
-}
-.table .td-actions .btn {
-  margin: 0px;
-  padding: 5px;
-}
-.table > tbody > tr {
-  position: relative;
-}
+
+
 
 .checkbox label {
   cursor: pointer;
@@ -5068,8 +5031,8 @@ footer .btn {
   }
 }
 @media (min-width: 992px) {
-  .table-full-width {
-    margin-left: -20px;
-    margin-right: -20px;
-  }
+  /*.table-full-width {*/
+    /*margin-left: -20px;*/
+    /*margin-right: -20px;*/
+  /*}*/
 }

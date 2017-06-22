@@ -17,6 +17,7 @@
     <mapping class="main.java.com.pharmacyshopautomation.models.Admin" />
     <mapping class="main.java.com.pharmacyshopautomation.models.Cabinet" />
     <mapping class="main.java.com.pharmacyshopautomation.models.Drug" />
+    <mapping class="main.java.com.pharmacyshopautomation.models.DrugCategory" />
     <mapping class="main.java.com.pharmacyshopautomation.models.Staff" />
     <mapping class="main.java.com.pharmacyshopautomation.models.Role" />
   </session-factory>

@@ -1,6 +1,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="main.java.com.pharmacyshopautomation.utils.GeneralUtil" %>
 <%@ page import="main.java.com.pharmacyshopautomation.models.Staff" %>
+<%@ page import="main.java.com.pharmacyshopautomation.models.DrugCategory" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <html>
@@ -12,6 +13,7 @@
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link href="css/demo.css" rel="stylesheet" />
     <link href="css/font-awesome.css" rel="stylesheet">
+
 
 <style>
 
@@ -25,6 +27,7 @@
     try
     {
         List result = GeneralUtil.getAllStaffbyId();
+        List categoryresult = GeneralUtil.getAllDrugCategories();
 
 %>
 <div id="myModalDialog" class="modal fade">
@@ -50,8 +53,9 @@
 
     <div class="sidebar" data-color="purple">
         <div class="logo">
-            <span style="margin-left: 40px; font-size: 25px; color: white">DASHBOARD</span>
+            <span style="margin-left: 70px; font-size: 25px; color: white">ALOHA</span>
         </div>
+        <hr style="border:0;margin-top: 5px; margin-bottom: 0px">
 
 
 
@@ -71,7 +75,7 @@
 
                     </ul>
                 </li>
-                <hr>
+
                 <li class="active">
 
                     <a data-toggle="collapse" data-target="#drug"> Drug <i class="fa fa-caret-down"></i></a>
@@ -84,7 +88,7 @@
                             <a href="#editdrug" style="text-decoration: none" id="editdrg">Edit</a></li>
                     </ul>
                 </li>
-                <hr>
+
                 <li class="active">
                     <a data-toggle="collapse" data-target="#stock"> Stock <i class="fa fa-caret-down"></i></a>
                     <ul id="stock" class="collapse">
@@ -94,12 +98,12 @@
                             <a href="#" class="tilliknwwhyunderlinedecorationstillshows">Report</a></li>
                   </ul>
                 </li>
-                <hr>
+
                 <li class="active">
 
                     <a> Logout</a>
                 </li>
-                <hr>
+
             </ul>
         </div>
     </div>
@@ -288,9 +292,9 @@
         <div class="col-sm-10 col-sm-offset-0">
             <h2 style="color: #1ab7ea">VIEW ALL STAFF</h2>
             <form method="post">
-                <div class="table-full-width col-lg-12">
-                    <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
-                        <thead>
+                <div class="col-lg-12">
+                    <table class="table table-striped table-bordered" cellspacing="0" width="100%">
+                    <thead>
                     <th>S/N</th>
                     <th>Name</th>
                     <th>Email</th>
@@ -380,10 +384,10 @@
     <div class="main-panel" style="display: none" id="addcategory">
         <div class="col-sm-10 col-sm-offset-0">
             <h2 style="color: #1ab7ea">ADD DRUG CATEGORY</h2>
-            <form action="" method="post">
+            <form action="/AddDrugCategoryController" method="post">
                 <div class="col-lg-5">
 
-                    <input type="text" class="form-control" placeholder="Enter Drug Category" name="drugcategory" id="drugcategory" onblur="toUpperCase(this)"/>
+                    <input type="text" class="form-control" placeholder="Enter Drug Category" name="category" id="category" onblur="toUpperCase(this)"/>
                     <input type="submit" value="ADD CATEGORY" class="btn btn-info"/>
                 </div>
 
@@ -443,19 +447,25 @@
             <form method="post" action="">
                 <div class="col-lg-4">
 
-                    <input type="text" class="form-control" placeholder="Drug Id" name="drugid" required autocomplete="off"/>
+                    <input type="text" class="form-control" name="drugid" required autocomplete="off" id="drugid" readonly/>
                     <input type="text" class="form-control" placeholder="Drug Name" name="drugname" required autocomplete="off"/>
                     <input type="text" class="form-control" placeholder="Manufacturer" name="manufacturer" required autocomplete="off"/>
                     <select class="form-control" name="drugcategory" required autocomplete="off">
                         <option value="">Select Drug Category</option>
-                        <option value="SINGLE">SINGLE</option>
-                        <option value="MARRIED">MARRIED</option>
+                        <%
+                            for(int i = 0; i<categoryresult.size(); i++){
+                        %>
+                        <option value="<%=((DrugCategory) categoryresult.get(i)).getCategory()%>"><%=((DrugCategory) categoryresult.get(i)).getCategory()%></option>
+                        <%
+                            }
+                        %>
+
                     </select>
-                    <input type="text" class="form-control" placeholder="Drug Price" name="drugprice" required autocomplete="off"/>
+                    <input type="number" class="form-control" placeholder="Drug Price" name="drugprice" required autocomplete="off"/>
                     <input type="text" class="form-control" placeholder="Drug Location" name="druglocation" required autocomplete="off"/>
                 </div>
                 <div class="col-lg-4">
-                    <input type="text" class="form-control" placeholder="Drug Quantity" name="drugquantity" required autocomplete="off"/>
+                    <input type="number" class="form-control" placeholder="Drug Quantity" name="drugquantity" required autocomplete="off"/>
                     <input type="text" class="form-control" placeholder="Batch Number" name="batchnumber" required autocomplete="off"/>
                     <input type="text" class="form-control" placeholder="Function" name="function" required autocomplete="off"/>
                     <input placeholder="Production date" class="form-control" type="text" onfocus="(this.type='date')" onblur="(this.type='text')" id="productiondate" name="productiondate">
@@ -602,6 +612,8 @@
 <script src="js/demo.js"></script>
 <script>
     $(document).ready(function(){
+
+
         var issuesPresent = document.getElementById("info").innerHTML;
         if(issuesPresent !="")
             $ ("#myModalDialog").modal('show');
