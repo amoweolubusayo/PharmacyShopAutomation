@@ -131,3 +131,6 @@ nav.sidebar a{
 .tilliknwwhyunderlinedecorationstillshows:hover .tilliknwwhyunderlinedecorationstillshows:focus{
     text-decoration: none;
 }
+thead-default th {
+    color:#464a4c;background-color:#eceeef
+}

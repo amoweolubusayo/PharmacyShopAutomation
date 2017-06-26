@@ -118,6 +118,9 @@ public class AddDrugController extends HttpServlet {
         }
 
     }
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher("admindashboard.jsp").forward(request,response);
+    }
 
 
 }

@@ -172,12 +172,14 @@ public class GeneralUtil {
             tx = session.beginTransaction();
             String hql = "SELECT count(*) FROM Drug";
             Query query = session.createQuery(hql);
-            Integer e = (Integer) query.uniqueResult();
-            if (e == null) {
-                result = 0;
+            Long e = (Long) query.iterate().next();
+            System.out.println(e);
+            if (e != null) {
+                result = e.intValue();
             }
 
         } catch (Exception ex) {
+            ex.printStackTrace();
             if (tx != null) {
                 tx.rollback();
             }

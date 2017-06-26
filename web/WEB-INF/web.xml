@@ -17,6 +17,12 @@
     </servlet>
     <servlet>
         <description></description>
+        <display-name>LogoutController</display-name>
+        <servlet-name>LogoutController</servlet-name>
+        <servlet-class>main.java.com.pharmacyshopautomation.controllers.LogoutController</servlet-class>
+    </servlet>
+    <servlet>
+        <description></description>
         <display-name>AddStaffController</display-name>
         <servlet-name>AddStaffController</servlet-name>
         <servlet-class>main.java.com.pharmacyshopautomation.controllers.AddStaffController</servlet-class>
@@ -55,6 +61,10 @@
     <servlet-mapping>
         <servlet-name>LoginController</servlet-name>
         <url-pattern>/LoginController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LogoutController</servlet-name>
+        <url-pattern>/LogoutController</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AddStaffController</servlet-name>

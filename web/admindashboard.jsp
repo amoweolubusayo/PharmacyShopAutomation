@@ -7,10 +7,10 @@
 <html>
 
 <head>
-
+    <link rel="stylesheet" href="css/bootstrap.min.css">
     <link href="css/design.css" rel="stylesheet">
     <link href="css/material-dashboard.css" rel="stylesheet"/>
-    <link rel="stylesheet" href="css/bootstrap.min.css">
+
     <link href="css/demo.css" rel="stylesheet" />
     <link href="css/font-awesome.css" rel="stylesheet">
 
@@ -29,7 +29,7 @@
     {
         List result = GeneralUtil.getAllStaffbyId();
         List categoryresult = GeneralUtil.getAllDrugCategories();
-        Integer lastDrugId = GeneralUtil.getLastDrugId();
+        Integer lastDrugId = GeneralUtil.getLastDrugId().intValue();
 
 %>
 
@@ -78,7 +78,7 @@
 
                     </ul>
                 </li>
-
+                <hr>
                 <li class="active">
 
                     <a data-toggle="collapse" data-target="#drug"> Drug <i class="fa fa-caret-down"></i></a>
@@ -91,7 +91,7 @@
                             <a href="#editdrug" style="text-decoration: none" id="editdrg">Edit</a></li>
                     </ul>
                 </li>
-
+                <hr>
                 <li class="active">
                     <a data-toggle="collapse" data-target="#stock"> Stock <i class="fa fa-caret-down"></i></a>
                     <ul id="stock" class="collapse">
@@ -101,23 +101,24 @@
                             <a href="#" class="tilliknwwhyunderlinedecorationstillshows">Report</a></li>
                   </ul>
                 </li>
-
+                <hr>
                 <li class="active">
 
-                    <a> Logout</a>
+                    <a href="/LogoutController"> Logout</a>
                 </li>
-
+                <hr>
             </ul>
         </div>
     </div>
 
-    <div class="main-panel" style="display: none" id="addinfo">
-        <div class="col-sm-10 col-sm-offset-0">
+    <div class="main-panel" id="addinfo">
+        <div class="col-sm-10 col-sm-offset-2">
 
-            <h2 style="color: #1ab7ea">ADD STAFF</h2>
+            <h2 style="color: #1ab7ea;margin-left:10px">ADD STAFF</h2>
 
             <form method="post" action="/AddStaffController">
-                <div class="col-lg-4">
+                <div class="col-lg-4
+">
 
                     <input type="text" class="form-control" placeholder="Enter name" name="staffname" required autocomplete="off"/>
                 <select class="form-control" name="gender" required autocomplete="off">
@@ -149,8 +150,8 @@
                 <div class="col-lg-4" style="margin-top: 170px">
                     <span style="font-size: 12px; color: red">username is the staff-id and can be changed</span>
                 </div>
-                <div class="col-sm-5">
-                <input type="submit" value="submit" class="btn btn-info"/>
+                <div class="col-sm-8">
+                <input type="submit" value="submit" class="btn btn-info btn-lg btn-block"/>
                 </div>
 
             </form>
@@ -200,10 +201,10 @@
 
     </div>
     <div class="main-panel" style="display: none" id="editinfo">
-        <div class="col-sm-10 col-sm-offset-0">
-            <h2 style="color: #1ab7ea">EDIT STAFF</h2>
+        <div class="col-sm-10 col-sm-offset-1">
+            <h2 style="color: #1ab7ea;margin-left: 10px">EDIT STAFF</h2>
             <form action="/EditStaffController" method="post">
-                <div class="col-lg-5">
+                <div class="col-lg-6">
                     <select class="form-control" name="staffid" id="staffid">
                         <option value="">STAFF ID</option>
                         <%
@@ -228,11 +229,11 @@
                         <option value="ATTENDANT">ATTENDANT</option>
                     </select>
 
-                        <input type="submit" value="edit" class="btn btn-info"/>
+
 
                 </div>
 
-                <div class="col-lg-5">
+                <div class="col-lg-6">
                     <input type="button" class="btn-block btn btn-lg btn-info" style="border-radius: 0px;" value="Check Details" onclick="searchStaff();"/>
                     <input type="email" class="form-control" placeholder="Enter email" name="email" onblur="toUpperCase(this)" id="email"/>
 
@@ -242,8 +243,11 @@
                         <option value="FEMALE">FEMALE</option>
                     </select>
                     <input type="text" class="form-control" placeholder="Enter address" name="address" id="address"  onblur="toUpperCase(this)"/>
-                    <input type="date" class="form-control" placeholder="Date employed" name="dateemployed" id="dateemployed" readonly/>
+                    <input type="text" class="form-control" placeholder="Date employed" name="dateemployed" id="dateemploy" readonly/>
                     <input type="text" class="form-control" placeholder="Enter phonenumber" name="phonenumber" id="phonenumber"/>
+                </div>
+                <div class="col-sm-12">
+                    <input type="submit" value="edit" class="btn btn-info btn-lg btn-block"/>
                 </div>
             </form>
 
@@ -292,34 +296,34 @@
 
     </div>
     <div class="main-panel" style="display: none" id="viewinfo">
-        <div class="col-sm-10 col-sm-offset-0">
-            <h2 style="color: #1ab7ea">VIEW ALL STAFF</h2>
+        <div class="col-sm-12">
+            <h2 style="color: #1ab7ea;margin-left: 10px">VIEW ALL STAFF</h2>
             <form method="post">
                 <div class="col-lg-12">
-                    <table class="table table-striped table-bordered" cellspacing="0" width="100%">
-                    <thead>
+                    <table class="table table-striped table-hover table-condensed" cellpadding="2" cellspacing="2">
+                        <thead class="thead-default">
+                    <tr>
                     <th>S/N</th>
                     <th>Name</th>
                     <th>Email</th>
                     <th>Gender</th>
                     <th>Marital Status</th>
                     <th>Address</th>
-                    <th>Date Employed</th>
                     <th>Phonenumber</th>
                     <th>Position</th>
+                    </tr>
                     </thead>
                     <tbody>
                     <%
                         for(int i = 0; i<result.size(); i++){
                     %>
-                    <tr>
+                    <tr class="bg-info">
                         <td><%=i+1%></td>
                         <td><%=((Staff) result.get(i)).getStaffname()%></td>
                         <td><%=((Staff) result.get(i)).getStaffemail()%></td>
                         <td><%=((Staff) result.get(i)).getGender()%></td>
                         <td><%=((Staff) result.get(i)).getMaritalstatus()%></td>
                         <td><%=((Staff) result.get(i)).getAddress()%></td>
-                        <td><%=((Staff) result.get(i)).getDateemployed()%></td>
                         <td><%=((Staff) result.get(i)).getPhonenumber()%></td>
                         <td><%=((Staff) result.get(i)).getRole()%></td>
                     </tr>
@@ -385,13 +389,13 @@
 
     </div>
     <div class="main-panel" style="display: none" id="addcategory">
-        <div class="col-sm-10 col-sm-offset-0">
-            <h2 style="color: #1ab7ea">ADD DRUG CATEGORY</h2>
+        <div class="col-sm-10 col-sm-offset-2">
+            <h2 style="color: #1ab7ea;margin-left: 10px">ADD DRUG CATEGORY</h2>
             <form action="/AddDrugCategoryController" method="post">
                 <div class="col-lg-5">
 
                     <input type="text" class="form-control" placeholder="Enter Drug Category" name="category" id="category" onblur="toUpperCase(this)"/>
-                    <input type="submit" value="ADD CATEGORY" class="btn btn-info"/>
+                    <input type="submit" value="ADD CATEGORY" class="btn btn-info btn-lg btn-block"/>
                 </div>
 
                 <div class="col-lg-5">
@@ -442,10 +446,10 @@
 
 
     </div>
-    <div class="main-panel" id="adddrug">
-        <div class="col-sm-10 col-sm-offset-0">
+    <div class="main-panel" style="display: none" id="adddrug">
+        <div class="col-sm-10 col-sm-offset-2">
 
-            <h2 style="color: #1ab7ea">ADD DRUG</h2>
+            <h2 style="color: #1ab7ea;margin-left: 10px">ADD DRUG</h2>
 
             <form method="post" action="/AddDrugController">
                 <div class="col-lg-4">
@@ -476,8 +480,8 @@
                     <input placeholder="Registration date" class="form-control" type="text" onfocus="(this.type='date')" onblur="(this.type='text')" id="registrationdate" name="registrationdate">
                 </div>
 
-                <div class="col-sm-5">
-                    <input type="submit" value="submit" class="btn btn-info"/>
+                <div class="col-sm-8">
+                    <input type="submit" value="submit" class="btn btn-info btn-lg btn-block"/>
                 </div>
 
             </form>
@@ -526,13 +530,13 @@
 
 
     </div>
-    <div class="main-panel" id="editdrug">
-        <div class="col-sm-10 col-sm-offset-0">
+    <div class="main-panel" style="display: none" id="editdrug">
+        <div class="col-sm-10 col-sm-offset-1">
 
-            <h2 style="color: #1ab7ea">EDIT DRUG</h2>
+            <h2 style="color: #1ab7ea;margin-left: 10px">EDIT DRUG</h2>
 
             <form method="post" action="">
-                <div class="col-lg-4">
+                <div class="col-lg-6">
 
                     <input type="text" class="form-control" placeholder="Drug Id" name="drugid" required autocomplete="off"/>
                     <input type="text" class="form-control" placeholder="Drug Name" name="drugname" required autocomplete="off"/>
@@ -544,10 +548,9 @@
                     </select>
                     <input type="text" class="form-control" placeholder="Drug Price" name="drugprice" required autocomplete="off"/>
                     <input type="text" class="form-control" placeholder="Drug Location" name="druglocation" required autocomplete="off"/>
-                    <input type="submit" value="submit" class="btn btn-info"/>
 
                 </div>
-                <div class="col-lg-4">
+                <div class="col-lg-6">
                     <input type="button" class="btn-block btn btn-lg btn-info" style="border-radius: 0px;" value="Check Details" onclick=""/>
 
                     <input type="text" class="form-control" placeholder="Drug Quantity" name="drugquantity" required autocomplete="off"/>
@@ -556,7 +559,10 @@
                     <input placeholder="Production date" class="form-control" type="text" onfocus="(this.type='date')" onblur="(this.type='text')" id="productiondate" name="productiondate">
                     <input placeholder="Expiry date" class="form-control" type="text" onfocus="(this.type='date')" onblur="(this.type='text')" id="expirydate" name="expirydate">
                 </div>
+                    <div class="col-sm-12">
+                        <input type="submit" value="edit" class="btn btn-info btn-lg btn-block"/>
 
+                    </div>
 
 
             </form>
@@ -607,7 +613,7 @@
     </div>
 
 </div>
-<script> window.lastDrugId = <%= lastDrugId%>; </script>
+
 <script src="js/jquery.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/material.min.js"></script>
@@ -624,9 +630,17 @@
             fill.value = fill.value.toUpperCase();
         }
 
-        $.get('lastDrugI');
-        $("#drugid")[0].value = 'DRUG00'+ <%=lastDrugId + 1%>;
-
+        $.get('lastDrugId');
+       var DrugId = <%=lastDrugId + 1%>;
+        if(DrugId >=1 && DrugId <= 9){
+            $("#drugid")[0].value = 'DRUG00'+ DrugId;
+        }
+        else if(DrugId >=10 && DrugId <= 99){
+            $("#drugid")[0].value = 'DRUG0'+ DrugId;
+        }
+        else{
+            $("#drugid")[0].value = 'DRUG'+ DrugId;
+        }
         $("#add").click(function(){
             $("#addinfo").show();
             $("#editinfo").hide();
@@ -705,7 +719,7 @@
                 document.getElementById("email").value =Email;
                 document.getElementById("gender").value =Gender;
                 document.getElementById("address").value =Address;
-                document.getElementById("dateemployed").value =D;
+                document.getElementById("dateemploy").value =D;
                 document.getElementById("phonenumber").value =Phonenumber;
             });
         }
