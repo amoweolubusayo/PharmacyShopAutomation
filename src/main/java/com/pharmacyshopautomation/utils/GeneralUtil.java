@@ -164,6 +164,29 @@ public class GeneralUtil {
         }
         return result;
     }
+    public static Integer getLastDrugId(){
+        Integer result = 0;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+        try{
+            tx = session.beginTransaction();
+            String hql = "SELECT count(*) FROM Drug";
+            Query query = session.createQuery(hql);
+            Integer e = (Integer) query.uniqueResult();
+            if (e == null) {
+                result = 0;
+            }
+
+        } catch (Exception ex) {
+            if (tx != null) {
+                tx.rollback();
+            }
+        } finally {
+            session.close();
+        }
+        return result;
+    }
+
     public static Staff getStaffById(String staffid) {
         Staff staff = null;
         Session session = HibernateUtil.getSessionFactory().openSession();

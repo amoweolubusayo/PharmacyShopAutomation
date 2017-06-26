@@ -35,10 +35,17 @@
     </servlet>
     <servlet>
         <description></description>
-        <display-name>Add</display-name>
+        <display-name>AddDrugCategoryController</display-name>
         <servlet-name>AddDrugCategoryController</servlet-name>
         <servlet-class>main.java.com.pharmacyshopautomation.controllers.AddDrugCategoryController</servlet-class>
     </servlet>
+    <servlet>
+        <description></description>
+        <display-name>AddDrugController</display-name>
+        <servlet-name>AddDrugController</servlet-name>
+        <servlet-class>main.java.com.pharmacyshopautomation.controllers.AddDrugController</servlet-class>
+    </servlet>
+
 
     <!--mapping-->
     <servlet-mapping>
@@ -65,5 +72,10 @@
         <servlet-name>AddDrugCategoryController</servlet-name>
         <url-pattern>/AddDrugCategoryController</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddDrugController</servlet-name>
+        <url-pattern>/AddDrugController</url-pattern>
+    </servlet-mapping>
+
 
 </web-app>

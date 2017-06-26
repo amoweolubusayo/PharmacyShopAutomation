@@ -23,13 +23,16 @@
 
 </head>
 <body>
+
 <%
     try
     {
         List result = GeneralUtil.getAllStaffbyId();
         List categoryresult = GeneralUtil.getAllDrugCategories();
+        Integer lastDrugId = GeneralUtil.getLastDrugId();
 
 %>
+
 <div id="myModalDialog" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -444,7 +447,7 @@
 
             <h2 style="color: #1ab7ea">ADD DRUG</h2>
 
-            <form method="post" action="">
+            <form method="post" action="/AddDrugController">
                 <div class="col-lg-4">
 
                     <input type="text" class="form-control" name="drugid" required autocomplete="off" id="drugid" readonly/>
@@ -604,7 +607,7 @@
     </div>
 
 </div>
-
+<script> window.lastDrugId = <%= lastDrugId%>; </script>
 <script src="js/jquery.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/material.min.js"></script>
@@ -613,7 +616,6 @@
 <script>
     $(document).ready(function(){
 
-
         var issuesPresent = document.getElementById("info").innerHTML;
         if(issuesPresent !="")
             $ ("#myModalDialog").modal('show');
@@ -621,6 +623,9 @@
         function toUpperCase(fill) {
             fill.value = fill.value.toUpperCase();
         }
+
+        $.get('lastDrugI');
+        $("#drugid")[0].value = 'DRUG00'+ <%=lastDrugId + 1%>;
 
         $("#add").click(function(){
             $("#addinfo").show();

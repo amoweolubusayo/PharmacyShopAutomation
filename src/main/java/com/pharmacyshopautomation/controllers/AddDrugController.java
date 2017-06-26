@@ -30,6 +30,7 @@ public class AddDrugController extends HttpServlet {
         response.addHeader("Cache-Control", "no-cache");
         session= request.getSession();
         String drugid = request.getParameter("drugid");
+
         String drugname = request.getParameter("drugname");
         String manufacturer = request.getParameter("manufacturer");
         String drugcategory = request.getParameter("drugcategory");
@@ -78,6 +79,7 @@ public class AddDrugController extends HttpServlet {
             return;
         }
         Drug drug = new Drug();
+        drug.setDrugid(drugid);
         drug.setDrugname(drugname);
         drug.setManufacturer(manufacturer);
         drug.setCategory(drugcategory);
