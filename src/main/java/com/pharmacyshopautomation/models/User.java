@@ -5,16 +5,25 @@ import javax.persistence.*;
 
 
 @Entity
-public class Admin {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     public String username;
     public String password;
+    public String roletype;
     private boolean isEnabled;
 
     public int getId() {
         return id;
+    }
+
+    public String getRoletype() {
+        return roletype;
+    }
+
+    public void setRoletype(String roletype) {
+        this.roletype = roletype;
     }
 
     public void setId(int id) {

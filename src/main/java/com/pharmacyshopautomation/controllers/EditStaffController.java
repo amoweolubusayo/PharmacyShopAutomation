@@ -1,5 +1,5 @@
 package main.java.com.pharmacyshopautomation.controllers;
-import main.java.com.pharmacyshopautomation.models.Admin;
+import main.java.com.pharmacyshopautomation.models.User;
 import main.java.com.pharmacyshopautomation.models.Staff;
 import main.java.com.pharmacyshopautomation.utils.GeneralUtil;
 import main.java.persistence.HibernateUtil;
@@ -12,9 +12,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * Created by USER on 6/21/2017.
@@ -54,13 +51,13 @@ public class EditStaffController extends HttpServlet {
             staff.setStaffpassword(password);
             staff.setRole(roletype);
             staff.setStaffid(username);
-            Admin admin = GeneralUtil.getAdminByUserName(username);
-            admin.setUsername(username);
-            admin.setPassword(password);
-            admin.isEnabled(true);
+            User user = GeneralUtil.getAdminByUserName(username);
+            user.setUsername(username);
+            user.setPassword(password);
+            user.isEnabled(true);
             tx = session.beginTransaction();
             session.update(staff);
-            session.update(admin);
+            session.update(user);
             tx.commit();
             request.setAttribute("issues", "Data of" + " " + staffid + " " + "has been successfully edited");
             rd = request.getRequestDispatcher("admindashboard.jsp");

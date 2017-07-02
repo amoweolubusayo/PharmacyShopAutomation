@@ -14,7 +14,7 @@
     <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
     <property name="hibernate.hbm2ddl.auto">update</property>
     <property name="show_sql">false</property>
-    <mapping class="main.java.com.pharmacyshopautomation.models.Admin" />
+    <mapping class="main.java.com.pharmacyshopautomation.models.User" />
     <mapping class="main.java.com.pharmacyshopautomation.models.Cabinet" />
     <mapping class="main.java.com.pharmacyshopautomation.models.Drug" />
     <mapping class="main.java.com.pharmacyshopautomation.models.DrugCategory" />

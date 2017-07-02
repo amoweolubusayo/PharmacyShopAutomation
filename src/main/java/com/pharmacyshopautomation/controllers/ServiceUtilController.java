@@ -1,5 +1,6 @@
 package main.java.com.pharmacyshopautomation.controllers;
 
+import main.java.com.pharmacyshopautomation.models.Drug;
 import main.java.com.pharmacyshopautomation.models.Staff;
 import main.java.com.pharmacyshopautomation.utils.GeneralUtil;
 import org.json.JSONException;
@@ -12,6 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 @WebServlet(name = "ServiceUtilController")
 public class ServiceUtilController extends HttpServlet {
@@ -23,6 +26,20 @@ public class ServiceUtilController extends HttpServlet {
                     String staffid =  request.getParameter("staffid");
                     output.write(fetchbyStaffId(staffid));
                     break;
+
+            case 3:
+                String drugid =  request.getParameter("drugid");
+                output.write(fetchbyDrugId(drugid));
+                break;
+            case 4:
+                String drugcategory =  request.getParameter("drugcategory");
+                output.write(fetchDrugList(drugcategory));
+                break;
+            case 5:
+                String drugname =  request.getParameter("drugname");
+                output.write(fetchbyDrugName(drugname));
+                break;
+
             default:
                 break;
         }
@@ -60,5 +77,81 @@ public class ServiceUtilController extends HttpServlet {
         return res;
 
     }
+    public String fetchbyDrugId(String drugid){
+        String res = null;
+        JSONObject drugidJson = new JSONObject();
+        try{
+            Drug drug = GeneralUtil.getDrugById(drugid);
+            drugidJson.put("Name",drug.getDrugname());
+            drugidJson.put("Quantity",drug.getQuantity());
+            drugidJson.put("Manufacturer",drug.getManufacturer());
+            drugidJson.put("Batchno",drug.getBatchnumber());
+            drugidJson.put("Category",drug.getCategory());
+            drugidJson.put("DrugFunction",drug.getFunction());
+            drugidJson.put("Price",drug.getPrice());
+            drugidJson.put("ProdDate",drug.getProddate());
+            drugidJson.put("DrugLocation",drug.getLocation());
+            drugidJson.put("ExpDate",drug.getExpdate());
+            drugidJson.put("respcode","00");
 
+        }
+        catch (JSONException e) {
+
+            e.printStackTrace();
+            drugidJson.put("respCode", "99");
+        }
+        res= drugidJson.toString();
+        return res;
+
+    }
+    public String fetchbyDrugName(String drugname){
+        String res = null;
+        JSONObject drugnameJson = new JSONObject();
+        try{
+            Drug drug = GeneralUtil.getDrugByName(drugname);
+            drugnameJson.put("Id",drug.getDrugid());
+            drugnameJson.put("Quantity",drug.getQuantity());
+            drugnameJson.put("Manufacturer",drug.getManufacturer());
+            drugnameJson.put("Batchno",drug.getBatchnumber());
+            drugnameJson.put("Category",drug.getCategory());
+            drugnameJson.put("DrugFunction",drug.getFunction());
+            drugnameJson.put("Price",drug.getPrice());
+            drugnameJson.put("ProdDate",drug.getProddate());
+            drugnameJson.put("DrugLocation",drug.getLocation());
+            drugnameJson.put("ExpDate",drug.getExpdate());
+            drugnameJson.put("respcode","00");
+            System.out.println(drug.getDrugid());
+            System.out.println(drug.getExpdate());
+
+        }
+        catch (JSONException e) {
+
+            e.printStackTrace();
+            drugnameJson.put("respCode", "99");
+        }
+        res= drugnameJson.toString();
+        return res;
+
+    }
+    public String fetchDrugList(String category){
+        String resp = null;
+        JSONObject druglistJson = new JSONObject();
+        List<String> drugNameArray = new ArrayList<>();
+        try{
+            List<Drug> drugList = GeneralUtil.getDrugsBasedOnCategory(category);
+            for (int i = 0; i < drugList.size(); i++) {
+                String drug = drugList.get(i).getDrugname();
+                drugNameArray.add(drug);
+            }
+            druglistJson.put("drugList",drugNameArray);
+            System.out.println(drugNameArray);
+        }
+     catch (JSONException e) {
+        e.printStackTrace();
+        druglistJson.put("respCode", "99");
+
+    }
+    resp = druglistJson.toString();
+        return resp;
+    }
 }

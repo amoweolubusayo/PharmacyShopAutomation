@@ -14,16 +14,16 @@ import java.util.List;
  * Created by USER on 6/12/2017.
  */
 public class GeneralUtil {
-    public static Admin getAdminByUserName(String username) {
-        Admin admin = null;
+    public static User getAdminByUserName(String username) {
+        User user = null;
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
-            String hql = "FROM Admin a where a.username =:username";
+            String hql = "FROM User a where a.username =:username";
             Query query = session.createQuery(hql);
             query.setParameter("username", username);
-            admin = (Admin) query.list().get(0);
+            user = (User) query.list().get(0);
 
             System.out.println("found!!!!");
 
@@ -35,7 +35,7 @@ public class GeneralUtil {
             session.close();
         }
 
-        return admin;
+        return user;
     }
     public static boolean checkForUsernameandPassword(String username, String password) {
         boolean result = false;
@@ -44,11 +44,11 @@ public class GeneralUtil {
         try {
             tx = session.beginTransaction();
 
-            Query query = session.createQuery("from Admin a  where a.username= :username and a.password=:password");
+            Query query = session.createQuery("from User a  where a.username= :username and a.password=:password");
             query.setParameter("username", username);
             query.setParameter("password", password);
 
-            Admin e = (Admin) query.uniqueResult();
+            User e = (User) query.uniqueResult();
 
             if (e != null) {
                 result = true;
@@ -147,6 +147,23 @@ public class GeneralUtil {
         }
         return result;
     }
+    public static List getAllDrugbyId(){
+        List result = new ArrayList();
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+        try{
+            tx = session.beginTransaction();
+            String hql = "FROM Drug ";
+            Query query = session.createQuery(hql);
+            result = query.list();
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return result;
+    }
     public static List getAllDrugCategories(){
         List result = new ArrayList();
         Session session = HibernateUtil.getSessionFactory().openSession();
@@ -164,6 +181,31 @@ public class GeneralUtil {
         }
         return result;
     }
+    public static List<Drug> getDrugsBasedOnCategory(String category){
+        List<Drug> result = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+        try{
+            tx = session.beginTransaction();
+            String hql = "FROM Drug d where d.category =:category";
+            Query query = session.createQuery(hql);
+            query.setParameter("category",category);
+            result = query.list();
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return result;
+
+    }
+
+
+
+
+
+
     public static Integer getLastDrugId(){
         Integer result = 0;
         Session session = HibernateUtil.getSessionFactory().openSession();
@@ -211,6 +253,52 @@ public class GeneralUtil {
         }
 
         return staff;
+    }
+    public static Drug getDrugById(String drugid) {
+        Drug drug = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            String hql = "FROM Drug u where u.drugid =:drugid";
+            Query query = session.createQuery(hql);
+            query.setParameter("drugid", drugid);
+            drug = (Drug) query.list().get(0);
+
+            System.out.println("got here first");
+
+        } catch (Exception ex) {
+            if (tx != null) {
+                tx.rollback();
+            }
+        } finally {
+            session.close();
+        }
+
+        return drug;
+    }
+    public static Drug getDrugByName(String drugname) {
+        Drug drug = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            String hql = "FROM Drug u where u.drugname =:drugname";
+            Query query = session.createQuery(hql);
+            query.setParameter("drugname", drugname);
+            drug = (Drug) query.list().get(0);
+
+            System.out.println("got here first");
+
+        } catch (Exception ex) {
+            if (tx != null) {
+                tx.rollback();
+            }
+        } finally {
+            session.close();
+        }
+
+        return drug;
     }
     public static Staff checkIfStaffExists(String staffid) {
         Staff result = null;

@@ -18,11 +18,17 @@ public class Servlet extends javax.servlet.http.HttpServlet {
         Session session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
 
-        Admin admin = new Admin();
-        admin.setUsername("ADMIN");
-        admin.setPassword("ADMIN");
-        admin.setEnabled(true);
-        session.saveOrUpdate(admin);
+        User user = new User();
+        user.setUsername("ADMIN");
+        user.setPassword("ADMIN");
+        user.setRoletype("SUPERVISOR");
+        user.setEnabled(true);
+        session.saveOrUpdate(user);
+
+        Role role = new Role();
+        role.setRoletype("SUPERVISOR");
+        session.saveOrUpdate(role);
+
         session.getTransaction().commit();
 
         RequestDispatcher rd = request.getRequestDispatcher("index.jsp");

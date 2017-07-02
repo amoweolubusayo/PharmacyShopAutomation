@@ -2,6 +2,8 @@
 <%@ page import="main.java.com.pharmacyshopautomation.utils.GeneralUtil" %>
 <%@ page import="main.java.com.pharmacyshopautomation.models.Staff" %>
 <%@ page import="main.java.com.pharmacyshopautomation.models.DrugCategory" %>
+<%@ page import="main.java.com.pharmacyshopautomation.models.Drug" %>
+<%@ page import="main.java.com.pharmacyshopautomation.models.User" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <html>
@@ -25,11 +27,34 @@
 <body>
 
 <%
+    String user_id = "";
+    String roleType = "";
+
+    if(session.getAttribute("current_user") !=null)
+    {
+        User current_user = (User)session.getAttribute("current_user");
+        try{
+            user_id = current_user.getUsername();
+            roleType = current_user.getRoletype();
+            System.out.println(roleType);
+            if (!roleType.equalsIgnoreCase("SUPERVISOR")){
+                response.sendRedirect("/attendantdashboard.jsp");
+            }
+        }
+        catch (Exception e){
+
+        }
+
+    }
+    else {
+        response.sendRedirect("/index.jsp");
+    }
     try
     {
         List result = GeneralUtil.getAllStaffbyId();
         List categoryresult = GeneralUtil.getAllDrugCategories();
         Integer lastDrugId = GeneralUtil.getLastDrugId().intValue();
+        List drugres = GeneralUtil.getAllDrugbyId();
 
 %>
 
@@ -538,26 +563,40 @@
             <form method="post" action="">
                 <div class="col-lg-6">
 
-                    <input type="text" class="form-control" placeholder="Drug Id" name="drugid" required autocomplete="off"/>
-                    <input type="text" class="form-control" placeholder="Drug Name" name="drugname" required autocomplete="off"/>
-                    <input type="text" class="form-control" placeholder="Manufacturer" name="manufacturer" required autocomplete="off"/>
-                    <select class="form-control" name="drugcategory" required autocomplete="off">
-                        <option value="">Select Drug Category</option>
-                        <option value="SINGLE">SINGLE</option>
-                        <option value="MARRIED">MARRIED</option>
+                    <select class="form-control" name="drugid" id="drugid">
+                        <option value="">DRUG ID</option>
+                        <%
+                            for(int i = 0; i<drugres.size(); i++){
+                        %>
+                        <option value="<%=((Drug) drugres.get(i)).getDrugid()%>"><%=((Drug) drugres.get(i)).getDrugid()%></option>
+                        <%
+                            }
+                        %>
                     </select>
-                    <input type="text" class="form-control" placeholder="Drug Price" name="drugprice" required autocomplete="off"/>
-                    <input type="text" class="form-control" placeholder="Drug Location" name="druglocation" required autocomplete="off"/>
+                    <input type="text" class="form-control" placeholder="Drug Name" name="drugname" id="drugname" required autocomplete="off"/>
+                    <input type="text" class="form-control" placeholder="Manufacturer" name="manufacturer" id="manufacturer" required autocomplete="off"/>
+                    <select class="form-control" name="drugcategory" id="drugcategory" required autocomplete="off">
+                        <option value="">Select Drug Category</option>
+                        <%
+                            for(int i = 0; i<categoryresult.size(); i++){
+                        %>
+                        <option value="<%=((DrugCategory) categoryresult.get(i)).getCategory()%>"><%=((DrugCategory) categoryresult.get(i)).getCategory()%></option>
+                        <%
+                            }
+                        %>
+                    </select>
+                    <input type="text" class="form-control" placeholder="Drug Price" name="drugprice" id="drugprice" required autocomplete="off"/>
+                    <input type="text" class="form-control" placeholder="Drug Location" name="druglocation" id="druglocation" required autocomplete="off"/>
 
                 </div>
                 <div class="col-lg-6">
-                    <input type="button" class="btn-block btn btn-lg btn-info" style="border-radius: 0px;" value="Check Details" onclick=""/>
+                    <input type="button" class="btn-block btn btn-lg btn-info" style="border-radius: 0px;" value="Check Details" onclick="searchDrug();"/>
 
-                    <input type="text" class="form-control" placeholder="Drug Quantity" name="drugquantity" required autocomplete="off"/>
-                    <input type="text" class="form-control" placeholder="Batch Number" name="batchnumber" required autocomplete="off"/>
-                    <input type="text" class="form-control" placeholder="Function" name="function" required autocomplete="off"/>
-                    <input placeholder="Production date" class="form-control" type="text" onfocus="(this.type='date')" onblur="(this.type='text')" id="productiondate" name="productiondate">
-                    <input placeholder="Expiry date" class="form-control" type="text" onfocus="(this.type='date')" onblur="(this.type='text')" id="expirydate" name="expirydate">
+                    <input type="text" class="form-control" placeholder="Drug Quantity" name="drugquantity" id="drugquantity" required autocomplete="off"/>
+                    <input type="text" class="form-control" placeholder="Batch Number" name="batchnumber" id="batchnumber" required autocomplete="off"/>
+                    <input type="text" class="form-control" placeholder="Function" name="function" id="drugfunction"  required autocomplete="off"/>
+                    <input placeholder="Production date" class="form-control" type="text" onfocus="(this.type='date')" onblur="(this.type='text')" id="proddate" name="productiondate">
+                    <input placeholder="Expiry date" class="form-control" type="text" onfocus="(this.type='date')" onblur="(this.type='text')" id="expdate" name="expirydate">
                 </div>
                     <div class="col-sm-12">
                         <input type="submit" value="edit" class="btn btn-info btn-lg btn-block"/>
@@ -695,9 +734,7 @@
 
     });
     function searchStaff(){
-
         var staffid = document.getElementById("staffid").value;
-
         if(staffid!=""){
             $.getJSON('/ServiceUtilController',{"operation":"2","staffid":staffid}, function (jd) {
                 var Name = jd.Name;
@@ -721,6 +758,36 @@
                 document.getElementById("address").value =Address;
                 document.getElementById("dateemploy").value =D;
                 document.getElementById("phonenumber").value =Phonenumber;
+            });
+        }
+    }
+    function searchDrug(){
+        alert("got here");
+        var drugid = document.getElementById("drugid").value;
+        if(drugid!=""){
+            $.getJSON('/ServiceUtilController',{"operation":"3","drugid":drugid}, function (jd) {
+                var Name = jd.Name;
+                var Quantity = jd.Quantity;
+                var Manufacturer = jd.Manufacturer;
+                var Batchno = jd.Batchno;
+                var Category = jd.Category;
+                var DrugFunction = jd.DrugFunction;
+                var Price = jd.Price;
+                var ProdDate = jd.ProdDate;
+                var pd = ProdDate.split(' ')[0]
+                var DrugLocation = jd.DrugLocation;
+                var ExpDate = jd.ExpDate;
+                var ep = ExpDate.split(' ')[0];
+                document.getElementById("drugname").value =Name;
+                document.getElementById("drugquantity").value =Quantity;
+                document.getElementById("manufacturer").value =Manufacturer;
+                document.getElementById("batchnumber").value =Batchno;
+                document.getElementById("category").value =Category;
+                document.getElementById("drugfunction").value =DrugFunction;
+                document.getElementById("drugprice").value =Price;
+                document.getElementById("proddate").value = pd;
+                document.getElementById("druglocation").value =DrugLocation;
+                document.getElementById("expdate").value =ep;
             });
         }
     }

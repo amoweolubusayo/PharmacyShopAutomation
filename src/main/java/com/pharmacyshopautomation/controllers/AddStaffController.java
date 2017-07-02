@@ -1,5 +1,5 @@
 package main.java.com.pharmacyshopautomation.controllers;
-import main.java.com.pharmacyshopautomation.models.Admin;
+import main.java.com.pharmacyshopautomation.models.User;
 import main.java.com.pharmacyshopautomation.models.Staff;
 import main.java.com.pharmacyshopautomation.utils.GeneralUtil;
 import main.java.persistence.HibernateUtil;
@@ -73,17 +73,18 @@ public class AddStaffController extends HttpServlet {
         staff.setStaffpassword(password);
         staff.setRole(roletype);
         staff.setStaffid(username);
-        Admin admin = new Admin();
-        admin.setUsername(username);
-        admin.setPassword(password);
-        admin.isEnabled(true);
+        User user = new User();
+        user.setUsername(username);
+        user.setPassword(password);
+        user.setRoletype(roletype);
+        user.isEnabled(true);
         try {
             Session session = HibernateUtil.getSessionFactory().openSession();
             Transaction tx = null;
             try {
                 tx = session.beginTransaction();
                 session.save(staff);
-                session.save(admin);
+                session.save(user);
                 tx.commit();
                 request.setAttribute("issues", "Staff with username" + "'" + username + "'" + " Successfully Created");
                 rd = request.getRequestDispatcher("admindashboard.jsp");
