@@ -168,9 +168,10 @@
                         </tr>
                         </tbody>
                     </table>
-                    <p style="color:#1ab7ea" id="totalbill">BILL: <input type="text" name="totalbill" id="totalbill" style="border:none" onkeyup="totalbill();"/></p>
 
-                    <input type="button" value="SELL" class="btn btn-info" onclick=""/>
+                    <p style="color:#1ab7ea" id=""> BILL:
+                        <input type="text" name="totalbill" id="totalbill" style="border:none"/></p>
+                        <input type="button" value="SELL" class="btn btn-info" onclick=""/>
                     <input type="button" value="ADD TO BILL" class="btn btn-warning" onclick="addtobill();"/>
 
 
@@ -184,8 +185,7 @@
                         <thead class="thead-default">
                         <tr>
                             <th>S/N</th>
-                            <th>ALL SALES</th>
-
+                            <th>PRICE</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -423,25 +423,32 @@
 
 <script>
     function addtobill() {
-
             var getTable = $('#billtable');
             var drugname = document.getElementById("drugname").value;
             var total = document.getElementById("total").value;
-            getTable.append("<tr><td><input type='text' class='form-control' placeholder='.' readonly/></td>"+"<td><input type='text' class='form-control drug_name' value='"+drugname+"'/></td>"+"<td><input type='text' class='form-control drug_price' value='"+total+"'/></td>"+"</tr>");
-
-
+        getTable.append("<tr><td><input type='text' class='form-control sn' readonly/></td>"+"<td><input type='text' class='form-control drug_name' value='"+drugname+"'/></td>"+"<td><input type='text' class='form-control drug_price' value='"+total+"'/></td>"+"</tr>");
+        var tArray = [];
         for(var i =0; i< ($('.drug_name').length); i++){
             $('.drug_name').eq(i).attr("id","dgname"+ i);
             $('.drug_name').eq(i).attr("name","dgname"+ i);
             $('.drug_price').eq(i).attr("id","dgprice"+ i);
             $('.drug_price').eq(i).attr("name","dgprice"+ i);
-            }
+            $('.sn').eq(i).attr("value",i+1);
+            var t = document.getElementById('dgprice' + i).value;
+            tArray.push(t);
+        }
+        var sum = 0;
+        for(var j = 0; j< tArray.length; j++){
+            sum+= parseInt(tArray[j]);
+        }
+        document.getElementById("totalbill").value= sum;
     }
     function getTotal(){
         var price = document.getElementById("price").value;
         var quantityrequested = document.getElementById("quantityrequested").value;
         var total = price * quantityrequested;
         document.getElementById("total").value = total;
+
     }
     function clr() {
         document.getElementById("drugid").value = "";
@@ -452,12 +459,22 @@
         document.getElementById("quantityrequested").value = "";
         document.getElementById("total").value = "";
     }
-    function totalbill(){
+
+        function totalbill(n) {
 
 
 
-    }
+                }
 
+//    function run(){
+//        alert('got here');
+//        var price = document.getElementById("price").value;
+//        var quantityrequested = document.getElementById("quantityrequested").value;
+//        var total = price * quantityrequested;
+//        document.getElementById("total").value = total;
+//
+//        totalbill(total);
+//    }
     $(document).ready(function() {
 
         var issuesPresent = document.getElementById("info").innerHTML;
