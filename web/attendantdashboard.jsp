@@ -117,10 +117,10 @@
 
     <div class="main-panel" id="sell">
         <div class="col-sm-10 col-sm-offset-0">
-
+            <%--<input type="text" id="leftover" name="leftover" value=""/>--%>
             <h2 style="color: #1ab7ea;margin-left:10px">SELL DRUG</h2>
 
-            <form method="post">
+            <form method="post" action="/AddSalesController">
                 <div class="col-lg-6">
                         <br/>
                     <select class="form-control" name="drugcategory" id="drugcategory" required autocomplete="off" onchange="searchDrugList();clr();">
@@ -156,8 +156,10 @@
                     <table class="table table-hover table-condensed" cellpadding="2" cellspacing="2" id="">
                         <thead class="thead-default">
                         <tr>
-                            <th>S/N</th>
+
                             <th>DRUG</th>
+                            <th>CATEGORY</th>
+                            <th>QUANT</th>
                             <th>PRICE</th>
 
                         </tr>
@@ -171,7 +173,7 @@
 
                     <p style="color:#1ab7ea" id=""> BILL:
                         <input type="text" name="totalbill" id="totalbill" style="border:none"/></p>
-                        <input type="button" value="SELL" class="btn btn-info" onclick=""/>
+                    <input type="submit" value="SELL" class="btn btn-info" onclick=""/>
                     <input type="button" value="ADD TO BILL" class="btn btn-warning" onclick="addtobill();"/>
 
 
@@ -188,33 +190,39 @@
                             <th>PRICE</th>
                         </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="salestable">
 
-                        <tr class="bg-info">
-                            <td>1</td>
-                            <td>VITAMIN C</td>
+                        <%--<tr class="bg-info">--%>
+                            <%--<td>1</td>--%>
+                            <%--<td>VITAMIN C</td>--%>
 
-                        </tr>
-                        <tr class="bg-success">
-                            <td>2</td>
-                            <td>VITAMIN D</td>
-                        </tr>
-                        <tr class="bg-warning">
-                            <td>3</td>
-                            <td>PARACTEMOL</td>
-                        </tr>
+                        <%--</tr>--%>
+                        <%--<tr class="bg-success">--%>
+                            <%--<td>2</td>--%>
+                            <%--<td>VITAMIN D</td>--%>
+                        <%--</tr>--%>
+                        <%--<tr class="bg-warning">--%>
+                            <%--<td>3</td>--%>
+                            <%--<td>PARACTEMOL</td>--%>
+                        <%--</tr>--%>
                         </tbody>
                     </table>
 
                 </div>
                 <div class="col-sm-2">
-                    <input type="text" name="" id="" placeholder="Search for Drug" class="form-control"/>
-                    <p style="color:#1ab7ea">AVAILABLE:  </p>
+                    <input type="text" name="search" id="search" placeholder="Search for Drug" class="form-control"/>
+                    <p style="color:#1ab7ea">AVAILABLE: <input type="text" name="random" id="random" style="border:none"/></p>
+
                 </div>
                 <div class="col-sm-1">
                 <br/>
-                    <br/>
-                <span class="glyphicon glyphicon-search"></span>
+
+                    <button type="button" class="btn btn-info" onclick="availabilityCheck()">
+
+                        <span class="glyphicon glyphicon-search"></span>
+                        Search
+                    </button>
+
                 </div>
 
 
@@ -419,63 +427,14 @@
 
 
 </div>
-
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/material.min.js"></script>
+<script src="js/material-dashboard.js"></script>
+<script src="js/demo.js"></script>
 
 <script>
-    function addtobill() {
-            var getTable = $('#billtable');
-            var drugname = document.getElementById("drugname").value;
-            var total = document.getElementById("total").value;
-        getTable.append("<tr><td><input type='text' class='form-control sn' readonly/></td>"+"<td><input type='text' class='form-control drug_name' value='"+drugname+"'/></td>"+"<td><input type='text' class='form-control drug_price' value='"+total+"'/></td>"+"</tr>");
-        var tArray = [];
-        for(var i =0; i< ($('.drug_name').length); i++){
-            $('.drug_name').eq(i).attr("id","dgname"+ i);
-            $('.drug_name').eq(i).attr("name","dgname"+ i);
-            $('.drug_price').eq(i).attr("id","dgprice"+ i);
-            $('.drug_price').eq(i).attr("name","dgprice"+ i);
-            $('.sn').eq(i).attr("value",i+1);
-            var t = document.getElementById('dgprice' + i).value;
-            tArray.push(t);
-        }
-        var sum = 0;
-        for(var j = 0; j< tArray.length; j++){
-            sum+= parseInt(tArray[j]);
-        }
-        document.getElementById("totalbill").value= sum;
-    }
-    function getTotal(){
-        var price = document.getElementById("price").value;
-        var quantityrequested = document.getElementById("quantityrequested").value;
-        var total = price * quantityrequested;
-        document.getElementById("total").value = total;
-
-    }
-    function clr() {
-        document.getElementById("drugid").value = "";
-        document.getElementById("quantity").value = "";
-        document.getElementById("price").value = "";
-        document.getElementById("druglocation").value = "";
-        document.getElementById("expirydate").value = "";
-        document.getElementById("quantityrequested").value = "";
-        document.getElementById("total").value = "";
-    }
-
-        function totalbill(n) {
-
-
-
-                }
-
-//    function run(){
-//        alert('got here');
-//        var price = document.getElementById("price").value;
-//        var quantityrequested = document.getElementById("quantityrequested").value;
-//        var total = price * quantityrequested;
-//        document.getElementById("total").value = total;
-//
-//        totalbill(total);
-//    }
-    $(document).ready(function() {
+    $(document).ready(function(){
 
         var issuesPresent = document.getElementById("info").innerHTML;
         if (issuesPresent != "")
@@ -501,6 +460,108 @@
             $("#sell").hide();
         });
     });
+    function availabilityCheck(){
+        var drugname =  document.getElementById("search").value;
+      drugname.toUpperCase();
+        if(drugname!=""){
+            $.getJSON('/ServiceUtilController',{"operation":"5","drugname":drugname}, function (jd) {
+                var Quantity = jd.Quantity;
+                alert(Quantity);
+                if(Quantity <= 50) {
+                    document.getElementById('random').value = "YES, but 5 left";
+                }
+                else if(Quantity < 1){
+                    document.getElementById('random').value = "NO";
+
+                }
+                else{
+                    document.getElementById('random').value = "NO";
+
+                }
+
+            });
+        }
+    }
+    function addtobill() {
+            var getTable = $('#billtable');
+            var drugname = document.getElementById("drugname").value;
+            var drugcategory = document.getElementById("drugcategory").value;
+            var total = document.getElementById("total").value;
+            var quantity = document.getElementById("quantityrequested").value;
+            var quant=document.getElementById("quantity").value;
+            var leftover = quant - quantity;
+        getTable.append("<tr><td><input type='text' class='form-control drug_name' value='"+drugname+"' readonly/></td>"+"<td><input type='text' class='form-control drug_category' value='"+drugcategory+"' readonly/></td>"+"<td><input type='text' class='form-control q_requested' value='"+quantity+"' readonly/></td>"+"<td><input type='text' class='form-control drug_price' value='"+total+"' readonly/></td>"+"<td><input type='hidden' class='form-control left_over' value='"+leftover+"' readonly/></td>"+"</tr>");
+        var tArray = [];
+        for(var i =0; i< ($('.drug_name').length); i++){
+            $('.drug_name').eq(i).attr("id","dgname"+ i);
+            $('.drug_name').eq(i).attr("name","dgname"+ i);
+            $('.drug_category').eq(i).attr("id","dcategory"+ i);
+            $('.drug_category').eq(i).attr("name","dcategory"+ i);
+            $('.drug_price').eq(i).attr("id","dgprice"+ i);
+            $('.drug_price').eq(i).attr("name","dgprice"+ i);
+            $('.q_requested').eq(i).attr("id","qrequested"+ i);
+            $('.q_requested').eq(i).attr("name","qrequested"+ i);
+            $('.left_over').eq(i).attr("id","leftover"+ i);
+            $('.left_over').eq(i).attr("name","leftover"+ i);
+            $('.sn').eq(i).attr("value",i+1);
+            $('.sn').eq(i).attr("id","snumber");
+
+            var t = document.getElementById('dgprice' + i).value;
+            tArray.push(t);
+        }
+        var sum = 0;
+        for(var j = 0; j< tArray.length; j++){
+            sum+= parseInt(tArray[j]);
+        }
+        document.getElementById("totalbill").value= sum;
+    }
+    function sell(){
+        var dgid = document.getElementById("drugid").value;
+        var quant=document.getElementById("quantity").value;
+        var prc=document.getElementById("price").value;
+        var dglocation =document.getElementById("druglocation").value;
+        var expirydt =document.getElementById("expirydate").value;
+        var quantrequested =document.getElementById("quantityrequested").value;
+        var totall=document.getElementById("total").value;
+        if (dgid!="" && quant!="" && prc!="" && dglocation!="" && expirydt!="" && quantrequested!="" && totall!="") {
+            var getTable = $('#salestable');
+            var bill = document.getElementById("totalbill").value;
+            getTable.append("<tr class='bg-info'><td></td>" + "<td>" + bill + "</td></tr>");
+            clr();
+            document.getElementById("totalbill").value = "";
+            $('#billtable').empty();
+            var x = document.getElementsByTagName('form');
+            x[0].submit();
+            alert('submitted');
+            return true;
+        }
+//        else if(dgid=="" && quant=="" && prc=="" && dglocation=="" && expirydt=="" && quantrequested=="" && totall==""){
+//            alert('You need to select what you will sell');
+//        }
+    else {
+            alert('You need to select what you will sell');
+        }
+    }
+    function getTotal(){
+        var price = document.getElementById("price").value;
+        var quantityrequested = document.getElementById("quantityrequested").value;
+        var total = price * quantityrequested;
+        document.getElementById("total").value = total;
+
+    }
+    function clr() {
+        document.getElementById("drugid").value = "";
+        document.getElementById("quantity").value = "";
+        document.getElementById("price").value = "";
+        document.getElementById("druglocation").value = "";
+        document.getElementById("expirydate").value = "";
+        document.getElementById("quantityrequested").value = "";
+        document.getElementById("total").value = "";
+    }
+
+
+
+
     function addtosaleslist(){
 
     }
@@ -587,11 +648,7 @@
         ex.printStackTrace();
     }
 %>
-<script src="js/jquery.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/material.min.js"></script>
-<script src="js/material-dashboard.js"></script>
-<script src="js/demo.js"></script>
+
 </body>
 
 </html>

@@ -20,5 +20,6 @@
     <mapping class="main.java.com.pharmacyshopautomation.models.DrugCategory" />
     <mapping class="main.java.com.pharmacyshopautomation.models.Staff" />
     <mapping class="main.java.com.pharmacyshopautomation.models.Role" />
+    <mapping class="main.java.com.pharmacyshopautomation.models.Sales" />
   </session-factory>
 </hibernate-configuration>

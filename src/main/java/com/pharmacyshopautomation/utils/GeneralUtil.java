@@ -327,4 +327,31 @@ public class GeneralUtil {
         return result;
 
     }
+    public static Drug getUniqueDrug(String drugid) {
+        Drug result = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tnx = null;
+        try {
+            tnx = session.beginTransaction();
+            Query query = session.createQuery("from Drug c where c.drugid=:drugid");
+            query.setParameter("drugid", drugid);
+            Drug c = (Drug) query.uniqueResult();
+            System.out.println("I am : " + c);
+            if (c != null) {
+                result = c;
+            }
+
+        } catch (Exception ex) {
+            if (tnx != null) {
+                tnx.rollback();
+            }
+
+            ex.printStackTrace();
+        } finally {
+            session.close();
+        }
+
+        return result;
+
+    }
 }

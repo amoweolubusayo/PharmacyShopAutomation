@@ -12,8 +12,28 @@ public class Drug {
     public String drugname;
     public String manufacturer;
     public String category;
-    public int price;
-    public int quantity;
+
+
+
+    public float price;
+    public float quantity;
+
+    public float getPrice() {
+        return price;
+    }
+
+    public void setPrice(float price) {
+        this.price = price;
+    }
+
+    public float getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(float quantity) {
+        this.quantity = quantity;
+    }
+
     public String batchnumber;
     public String function;
     public Date proddate;
@@ -59,22 +79,6 @@ public class Drug {
 
     public void setCategory(String category) {
         this.category = category;
-    }
-
-    public int getPrice() {
-        return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
     }
 
     public String getBatchnumber() {
