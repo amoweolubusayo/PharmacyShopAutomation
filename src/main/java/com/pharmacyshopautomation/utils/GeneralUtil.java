@@ -147,6 +147,41 @@ public class GeneralUtil {
         }
         return result;
     }
+    public static List<Sales> getAllSalesByTotalBill(String totalbill){
+        List<Sales> result = new ArrayList();
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+        try{
+            tx = session.beginTransaction();
+            String hql = "FROM Sales s where s.totalbill=:totalbill";
+            Query query = session.createQuery(hql);
+            query.setParameter("totalbill",totalbill);
+            result = query.list();
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return result;
+    }
+    public static List getAllBills(){
+        List result = new ArrayList();
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+        try{
+            tx = session.beginTransaction();
+            String hql = "FROM Sales ";
+            Query query = session.createQuery(hql);
+            result = query.list();
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return result;
+    }
     public static List getAllDrugbyId(){
         List result = new ArrayList();
         Session session = HibernateUtil.getSessionFactory().openSession();
@@ -171,6 +206,23 @@ public class GeneralUtil {
         try{
             tx = session.beginTransaction();
             String hql = "FROM DrugCategory ";
+            Query query = session.createQuery(hql);
+            result = query.list();
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return result;
+    }
+    public static List getAllShelfLabels(){
+        List result = new ArrayList();
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+        try{
+            tx = session.beginTransaction();
+            String hql = "FROM Shelf ";
             Query query = session.createQuery(hql);
             result = query.list();
         }
@@ -206,13 +258,41 @@ public class GeneralUtil {
 
 
 
+    public static Sales getLastSaleId(){
+        Sales result = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+        try{
+            tx = session.beginTransaction();
+            String hql = "FROM Sales order by salesId DESC";
+            Query query = session.createQuery(hql);
+            query.setMaxResults(1);
+            Sales c = (Sales) query.uniqueResult();
+            System.out.println("I am : " + c);
+            if (c != null) {
+                result = c;
+            }
+        } catch (Exception ex) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            ex.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return result;
+    }
+
+
+
+
     public static Integer getLastDrugId(){
         Integer result = 0;
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
         try{
             tx = session.beginTransaction();
-            String hql = "SELECT count(*) FROM Drug";
+            String hql = "SELECT count(*) FROM Drug ";
             Query query = session.createQuery(hql);
             Long e = (Long) query.iterate().next();
             System.out.println(e);
@@ -300,6 +380,29 @@ public class GeneralUtil {
 
         return drug;
     }
+    public static Sales getEachSalesDetailsByTotalBill(ArrayList<String> eachsale) {
+        Sales sales = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            String hql = "FROM Sales u where u.totalbill =:eachsale";
+            Query query = session.createQuery(hql);
+            query.setParameter("eachsale", eachsale);
+            sales = (Sales) query.list().get(0);
+
+            System.out.println("got here first");
+
+        } catch (Exception ex) {
+            if (tx != null) {
+                tx.rollback();
+            }
+        } finally {
+            session.close();
+        }
+
+        return sales;
+    }
     public static Staff checkIfStaffExists(String staffid) {
         Staff result = null;
         Session session = HibernateUtil.getSessionFactory().openSession();
@@ -353,5 +456,28 @@ public class GeneralUtil {
 
         return result;
 
+    }
+
+    public static boolean checkIfShelfLabelExists(String shelflabel) {
+        boolean result = false;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            Query query = session.createQuery("from Shelf  r where r.shelflabel=:shelflabel");
+            query.setParameter("shelflabel", shelflabel);
+            Shelf e = (Shelf) query.uniqueResult();
+            if (e != null) {
+                result = true;
+            }
+
+        } catch (Exception ex) {
+            if (tx != null) {
+                tx.rollback();
+            }
+        } finally {
+            session.close();
+        }
+        return result;
     }
 }

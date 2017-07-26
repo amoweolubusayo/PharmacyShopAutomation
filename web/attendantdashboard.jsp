@@ -1,9 +1,6 @@
 <%@ page import="java.util.List" %>
 <%@ page import="main.java.com.pharmacyshopautomation.utils.GeneralUtil" %>
-<%@ page import="main.java.com.pharmacyshopautomation.models.Staff" %>
-<%@ page import="main.java.com.pharmacyshopautomation.models.DrugCategory" %>
-<%@ page import="main.java.com.pharmacyshopautomation.models.Drug" %>
-<%@ page import="main.java.com.pharmacyshopautomation.models.User" %>
+<%@ page import="main.java.com.pharmacyshopautomation.models.*" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <html>
@@ -52,7 +49,8 @@
         }
     try
     {
-        List result = GeneralUtil.getAllStaffbyId();
+        String totalbill = "";
+        List result = GeneralUtil.getAllBills();
         List categoryresult = GeneralUtil.getAllDrugCategories();
         Integer lastDrugId = GeneralUtil.getLastDrugId().intValue();
         List drugres = GeneralUtil.getAllDrugbyId();
@@ -116,9 +114,31 @@
     </div>
 
     <div class="main-panel" id="sell">
-        <div class="col-sm-10 col-sm-offset-0">
-            <%--<input type="text" id="leftover" name="leftover" value=""/>--%>
-            <h2 style="color: #1ab7ea;margin-left:10px">SELL DRUG</h2>
+        <div class="col-sm-12 col-sm-offset-0">
+            <div class="col-sm-5">
+                <h2 style="color: #1ab7ea;margin-left:10px">SELL DRUG</h2>
+            </div>
+            <div class="col-sm-2" style="float: right">
+                <ul class="nav navbar-nav navbar-right" style="float: left">
+                    <li>
+                        <input type="text" name="search" id="search" placeholder="Search for Drug" class="form-control" />
+                    <span class="glyphicon glyphicon-search"></span>
+                    </li>
+                </ul>
+                    <%--<li>--%>
+                        <%--<button type="button" class="btn btn-xs btn-info" onclick="availabilityCheck()">--%>
+                            <%--<span class="glyphicon glyphicon-search"></span>--%>
+                            <%--Search--%>
+                        <%--</button>--%>
+                    <%--</li>--%>
+
+
+
+                <p style="color:#1ab7ea; margin-left: 20px">AVAILABLE: <input type="text" name="random" id="random" style="border:none"/></p>
+
+            </div>
+
+
 
             <form method="post" action="/AddSalesController">
                 <div class="col-lg-6">
@@ -174,60 +194,57 @@
                     <p style="color:#1ab7ea" id=""> BILL:
                         <input type="text" name="totalbill" id="totalbill" style="border:none"/></p>
                     <input type="submit" value="SELL" class="btn btn-info" onclick=""/>
-                    <input type="button" value="ADD TO BILL" class="btn btn-warning" onclick="addtobill();"/>
-
-
+                    <input type="button" value="ADD TO BILL" class="btn btn-warning" onclick="addtobill();S"/>
                 </div>
-
                 <br/>
-
-                <div class="col-lg-3">
-                       <br/>
+                <div class="col-lg-6">
+                    <br/>
                     <table class="table table-hover table-condensed" cellpadding="2" cellspacing="2">
                         <thead class="thead-default">
                         <tr>
                             <th>S/N</th>
                             <th>PRICE</th>
+                            <th>DRUGS SOLD</th>
                         </tr>
                         </thead>
+                        <tfoot>
+                        <tr>
+                            <%
+                                int sum =0 ;
+                                for(int i = 0; i<result.size(); i++){
+                                    sum += Integer.parseInt(((Sales) result.get(i)).getTotalbill());
+                            %>
+                            <%
+                                }
+                            %>
+                            <th>SUM</th>
+                            <th><%=sum%></th>
+                        </tr>
+
+                        </tfoot>
+
                         <tbody id="salestable">
 
-                        <%--<tr class="bg-info">--%>
-                            <%--<td>1</td>--%>
-                            <%--<td>VITAMIN C</td>--%>
+                        <%
+                            for(int i = 0; i<result.size(); i++){
 
-                        <%--</tr>--%>
-                        <%--<tr class="bg-success">--%>
-                            <%--<td>2</td>--%>
-                            <%--<td>VITAMIN D</td>--%>
-                        <%--</tr>--%>
-                        <%--<tr class="bg-warning">--%>
-                            <%--<td>3</td>--%>
-                            <%--<td>PARACTEMOL</td>--%>
-                        <%--</tr>--%>
+                        %>
+                        <tr class="bg-info">
+                            <td><%=i+1%></td>
+
+                            <td class="eachsale" onclick="eachSaleDetails();"> <%=((Sales) result.get(i)).getTotalbill()%></td>
+                            <td onclick="eachSaleDetails();"> <%=((Sales) result.get(i)).getDrugname().replace("[","").replace("]","")%></td>
+
+                        </tr>
+                        <%
+                            }
+                        %>
                         </tbody>
+
                     </table>
 
                 </div>
-                <div class="col-sm-2">
-                    <input type="text" name="search" id="search" placeholder="Search for Drug" class="form-control"/>
-                    <p style="color:#1ab7ea">AVAILABLE: <input type="text" name="random" id="random" style="border:none"/></p>
-
-                </div>
-                <div class="col-sm-1">
-                <br/>
-
-                    <button type="button" class="btn btn-info" onclick="availabilityCheck()">
-
-                        <span class="glyphicon glyphicon-search"></span>
-                        Search
-                    </button>
-
-                </div>
-
-
-
-            </form>
+  </form>
 
         </div>
         <div class="content">
@@ -444,6 +461,8 @@
             fill.value = fill.value.toUpperCase();
         }
 
+
+
         $("#selldrug").click(function(){
             $("#sell").show();
             $("#view").hide();
@@ -482,6 +501,33 @@
             });
         }
     }
+
+    for(var i =0; i< 100; i++) {
+        $('.eachsale').eq(i).attr("name", "eachsale" + i);
+        $('.eachsale').eq(i).attr("id", "eachsale" + i);
+    }
+    function eachSaleDetails(){
+        alert('im here');
+            var eachsale = ($('#eachsale'+i)).text();
+            alert(i);
+             alert(eachsale);
+
+
+            if (eachsale != "") {
+                //alert(eachsaleArray);
+                $.getJSON('/ServiceUtilController', {"operation": "6", "eachsaleArray": eachsale}, function (jd) {
+                    var Name = jd.Name;
+                    var Quantity = jd.Quantity;
+                    var Price = jd.Price;
+
+//                    alert(Name);
+//                    alert(Quantity);
+//                    alert(Price);
+                });
+            }
+
+    }
+
     function addtobill() {
             var getTable = $('#billtable');
             var drugname = document.getElementById("drugname").value;
@@ -505,6 +551,8 @@
             $('.left_over').eq(i).attr("name","leftover"+ i);
             $('.sn').eq(i).attr("value",i+1);
             $('.sn').eq(i).attr("id","snumber");
+//            $('.salesid').eq(i).attr("value",1);
+            $('.salesid').eq(i).attr("name","salesid");
 
             var t = document.getElementById('dgprice' + i).value;
             tArray.push(t);
@@ -514,7 +562,15 @@
             sum+= parseInt(tArray[j]);
         }
         document.getElementById("totalbill").value= sum;
+
+
+        for (var i =1; i<= 50; i++){
+            i = document.getElementById('salesid').value;
+        }
+        alert(document.getElementById('salesid').value);
+
     }
+
     function sell(){
         var dgid = document.getElementById("drugid").value;
         var quant=document.getElementById("quantity").value;

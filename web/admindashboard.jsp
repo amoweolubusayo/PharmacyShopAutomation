@@ -1,9 +1,6 @@
 <%@ page import="java.util.List" %>
 <%@ page import="main.java.com.pharmacyshopautomation.utils.GeneralUtil" %>
-<%@ page import="main.java.com.pharmacyshopautomation.models.Staff" %>
-<%@ page import="main.java.com.pharmacyshopautomation.models.DrugCategory" %>
-<%@ page import="main.java.com.pharmacyshopautomation.models.Drug" %>
-<%@ page import="main.java.com.pharmacyshopautomation.models.User" %>
+<%@ page import="main.java.com.pharmacyshopautomation.models.*" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <html>
@@ -52,7 +49,9 @@
     try
     {
         List result = GeneralUtil.getAllStaffbyId();
+        List stock = GeneralUtil.getAllDrugbyId();
         List categoryresult = GeneralUtil.getAllDrugCategories();
+        List shelflabel = GeneralUtil.getAllShelfLabels();
         Integer lastDrugId = GeneralUtil.getLastDrugId().intValue();
         List drugres = GeneralUtil.getAllDrugbyId();
 
@@ -118,12 +117,20 @@
                 </li>
                 <hr>
                 <li class="active">
+                    <a data-toggle="collapse" data-target="#shelf"> Shelf <i class="fa fa-caret-down"></i></a>
+                    <ul id="shelf" class="collapse">
+                        <li class="active nav" style="margin-left: 50px"><i class="fa fa-plus" style="color: white"></i>
+                            <a href="#addshelf" style="text-decoration: none" id="addshlf">Add</a></li>
+                    </ul>
+                </li>
+                <hr>
+                <li class="active">
                     <a data-toggle="collapse" data-target="#stock"> Stock <i class="fa fa-caret-down"></i></a>
                     <ul id="stock" class="collapse">
                         <li class="active nav" style="margin-left: 50px"><i class="fa fa-eye" style="color: white"></i>
-                            <a href="#" class="tilliknwwhyunderlinedecorationstillshows">View</a></li>
+                            <a href="#viewstock" class="tilliknwwhyunderlinedecorationstillshows" id="viewstck">View</a></li>
                         <li class="active nav" style="margin-left: 50px"><i class="fa fa-book" style="color: white"></i>
-                            <a href="#" class="tilliknwwhyunderlinedecorationstillshows">Report</a></li>
+                            <a href="#viewreport" style="text-decoration: none" id="viewrpt">Report</a></li>
                   </ul>
                 </li>
                 <hr>
@@ -494,7 +501,17 @@
 
                     </select>
                     <input type="number" class="form-control" placeholder="Drug Price" name="drugprice" required autocomplete="off"/>
-                    <input type="text" class="form-control" placeholder="Drug Location" name="druglocation" required autocomplete="off"/>
+                    <select class="form-control" name="druglocation" required autocomplete="off">
+                        <option value="">Select Shelf Label</option>
+                        <%
+                            for(int i = 0; i<shelflabel.size(); i++){
+                        %>
+                        <option value="<%=((Shelf) shelflabel.get(i)).getShelflabel()%>"><%=((Shelf) shelflabel.get(i)).getShelflabel()%></option>
+                        <%
+                            }
+                        %>
+
+                    </select>
                 </div>
                 <div class="col-lg-4">
                     <input type="number" class="form-control" placeholder="Drug Quantity" name="drugquantity" required autocomplete="off"/>
@@ -651,6 +668,290 @@
 
     </div>
 
+    <div class="main-panel" style="display: none" id="addcategory">
+        <div class="col-sm-10 col-sm-offset-2">
+            <h2 style="color: #1ab7ea;margin-left: 10px">ADD DRUG CATEGORY</h2>
+            <form action="/AddDrugCategoryController" method="post">
+                <div class="col-lg-5">
+
+                    <input type="text" class="form-control" placeholder="Enter Drug Category" name="category" id="category" onblur="toUpperCase(this)"/>
+                    <input type="submit" value="ADD CATEGORY" class="btn btn-info btn-lg btn-block"/>
+                </div>
+
+                <div class="col-lg-5">
+                </div>
+            </form>
+
+        </div>
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">
+
+                    </div>
+
+                    <div class="col-md-4">
+
+                    </div>
+
+                    <div class="col-md-4">
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-6 col-md-12">
+
+                    </div>
+
+                    <div class="col-lg-6 col-md-12">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-panel" style="display: none" id="addshelf">
+        <div class="col-sm-10 col-sm-offset-2">
+            <h2 style="color: #1ab7ea;margin-left: 10px">ADD SHELF</h2>
+            <form action="/AddShelfController" method="post">
+                <div class="col-lg-5">
+
+                    <input type="text" class="form-control" placeholder="Enter Shelf Label" name="shelflabel" id="shelflabel" onblur="toUpperCase(this)"/>
+                    <input type="submit" value="ADD SHELF" class="btn btn-info btn-lg btn-block"/>
+                </div>
+
+                <div class="col-lg-5">
+                </div>
+            </form>
+
+        </div>
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">
+
+                    </div>
+
+                    <div class="col-md-4">
+
+                    </div>
+
+                    <div class="col-md-4">
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-6 col-md-12">
+
+                    </div>
+
+                    <div class="col-lg-6 col-md-12">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <div class="main-panel" style="display: none" id="viewstock">
+        <div class="col-sm-12">
+            <h2 style="color: #1ab7ea;margin-left: 10px">VIEW ALL STOCK</h2>
+            <form method="post">
+                <div class="col-lg-12">
+                    <table class="table table-striped table-hover table-condensed" cellpadding="2" cellspacing="2">
+                        <thead class="thead-default">
+                        <tr>
+                            <th>S/N</th>
+                            <th>Name</th>
+                            <th>ID</th>
+                            <th>Category</th>
+                            <th>Price</th>
+                            <th>Quantity Available</th>
+                            <th>Location</th>
+                            <th>Expiry Date</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <%
+                            for(int i = 0; i<stock.size(); i++){
+                        %>
+                        <tr class="bg-info">
+                            <td><%=i+1%></td>
+                            <td><%=((Drug) stock.get(i)).getDrugname()%></td>
+                            <td><%=((Drug) stock.get(i)).getDrugid()%></td>
+                            <td><%=((Drug) stock.get(i)).getCategory()%></td>
+                            <td><%=((Drug) stock.get(i)).getPrice()%></td>
+                            <td><%=((Drug) stock.get(i)).getQuantity()%></td>
+                            <td><%=((Drug) stock.get(i)).getLocation()%></td>
+                            <td><%=((Drug) stock.get(i)).getExpdate()%></td>
+                        </tr>
+                        <%
+                            }
+                        %>
+                        </tbody>
+                    </table>
+                </div>
+            </form>
+
+        </div>
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">
+
+                    </div>
+
+                    <div class="col-md-4">
+
+                    </div>
+
+                    <div class="col-md-4">
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-6 col-md-12">
+
+                    </div>
+
+                    <div class="col-lg-6 col-md-12">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <div class="main-panel" style="display: none" id="viewreport">
+        <div class="col-sm-12">
+            <h2 style="color: #1ab7ea;margin-left: 10px">GENERATE REPORT</h2>
+            <form method="post">
+                <div class="col-lg-12">
+                    <table class="table table-striped table-hover table-condensed" cellpadding="2" cellspacing="2">
+                        <thead class="thead-default">
+                        <tr>
+                            <th>S/N</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Gender</th>
+                            <th>Marital Status</th>
+                            <th>Address</th>
+                            <th>Phonenumber</th>
+                            <th>Position</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <%
+                            for(int i = 0; i<result.size(); i++){
+                        %>
+                        <tr class="bg-info">
+                            <td><%=i+1%></td>
+                            <td><%=((Staff) result.get(i)).getStaffname()%></td>
+                            <td><%=((Staff) result.get(i)).getStaffemail()%></td>
+                            <td><%=((Staff) result.get(i)).getGender()%></td>
+                            <td><%=((Staff) result.get(i)).getMaritalstatus()%></td>
+                            <td><%=((Staff) result.get(i)).getAddress()%></td>
+                            <td><%=((Staff) result.get(i)).getPhonenumber()%></td>
+                            <td><%=((Staff) result.get(i)).getRole()%></td>
+                        </tr>
+                        <%
+                            }
+                        %>
+                        </tbody>
+                    </table>
+                </div>
+
+
+
+            </form>
+
+        </div>
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">
+
+                    </div>
+
+                    <div class="col-md-4">
+
+                    </div>
+
+                    <div class="col-md-4">
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-6 col-md-12">
+
+                    </div>
+
+                    <div class="col-lg-6 col-md-12">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
 </div>
 
 <script src="js/jquery.min.js"></script>
@@ -687,6 +988,9 @@
             $("#addcategory").hide();
             $("#adddrug").hide();
             $("#editdrug").hide();
+            $("#viewstock").hide();
+            $("#viewreport").hide();
+            $("#addshelf").hide();
         });
         $("#edit").click(function(){
             $("#editinfo").show();
@@ -695,6 +999,8 @@
             $("#addcategory").hide();
             $("#adddrug").hide();
             $("#editdrug").hide();
+            $("#viewstock").hide();
+            $("#viewreport").hide();
         });
         $("#view").click(function(){
             $("#viewinfo").show();
@@ -703,6 +1009,9 @@
             $("#editinfo").hide();
             $("#editdrug").hide();
             $("#addinfo").hide();
+            $("#viewstock").hide();
+            $("#viewreport").hide();
+            $("#addshelf").hide();
 
         });
         $("#addcat").click(function(){
@@ -712,6 +1021,9 @@
             $("#viewinfo").hide();
             $("#adddrug").hide();
             $("#editdrug").hide();
+            $("#viewstock").hide();
+            $("#viewreport").hide();
+            $("#addshelf").hide();
         });
         $("#adddrg").click(function(){
             $("#adddrug").show();
@@ -720,6 +1032,9 @@
             $("#addinfo").hide();
             $("#viewinfo").hide();
             $("#editdrug").hide();
+            $("#viewstock").hide();
+            $("#viewreport").hide();
+            $("#addshelf").hide();
 
         });
         $("#editdrg").click(function(){
@@ -729,9 +1044,45 @@
             $("#editinfo").hide();
             $("#viewinfo").hide();
             $("#addinfo").hide();
+            $("#viewstock").hide();
+            $("#viewreport").hide();
+            $("#addshelf").hide();
 
         });
+        $("#viewstck").click(function(){
+            $("#viewstock").show();
+            $("#editdrug").hide();
+            $("#adddrug").hide();
+            $("#addcategory").hide();
+            $("#editinfo").hide();
+            $("#viewinfo").hide();
+            $("#addinfo").hide();
+            $("#viewreport").hide();
+            $("#addshelf").hide();
 
+        });
+        $("#viewrpt").click(function(){
+            $("#viewreport").show();
+            $("#editdrug").hide();
+            $("#adddrug").hide();
+            $("#addcategory").hide();
+            $("#editinfo").hide();
+            $("#viewinfo").hide();
+            $("#addinfo").hide();
+            $("#viewstock").hide();
+            $("#addshelf").hide();
+        });
+        $("#addshlf").click(function(){
+            $("#addshelf").show();
+            $("#editdrug").hide();
+            $("#adddrug").hide();
+            $("#addcategory").hide();
+            $("#editinfo").hide();
+            $("#viewinfo").hide();
+            $("#addinfo").hide();
+            $("#viewstock").hide();
+            $("#viewreport").hide();
+        });
     });
     function searchStaff(){
         var staffid = document.getElementById("staffid").value;

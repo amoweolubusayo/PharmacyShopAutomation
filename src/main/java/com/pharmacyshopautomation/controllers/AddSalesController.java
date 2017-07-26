@@ -33,7 +33,7 @@ public class AddSalesController extends HttpServlet {
         String drugid = request.getParameter("drugid");
         String quantity = request.getParameter("quantity");
         ArrayList<String> drugName = new ArrayList<String>();
-
+        String salesId = request.getParameter("salesid");
         for (int i = 0; i < 100; i++) {
             System.out.println(drugName.size());
             if (request.getParameter("dgname" + (i)) != null && !request.getParameter("dgname" + (i)).trim().equals("")) {
@@ -86,32 +86,24 @@ public class AddSalesController extends HttpServlet {
         quantityrequested.trimToSize();
 
         System.out.println("number of drg" + drugName.size());
-        System.out.println("number of price" + price.size());
+        System.out.println(drugName.toString());
+        System.out.println("number of  price" + price.size());
         System.out.println("number of quantity" + quantityrequested.size());
         String totalbill = request.getParameter("totalbill");
         System.out.println(totalbill);
 
 
         Sales sales = new Sales();
-        for (int i = 0; i < drugName.size(); i++) {
-            sales.setDrugcategory(drugCategory.get(i));
-            sales.setQuantityrequested(quantityrequested.get(i));
-            System.out.println(drugName.size());
-            System.out.println("These are saved");
-            System.out.println("i is " + i);
-            System.out.println(drugName.get(i));
-            System.out.println(price.get(i));
-            System.out.println(quantityrequested.get(i));
-            sales.setDrugname(drugName.get(i));
-            sales.setPrice(price.get(i));
-            sales.setTotalbill(totalbill);
-            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-            Date date = new Date();
-            System.out.println(dateFormat.format(date));
-            sales.setDateofsale(dateFormat.format(date));
-            saveSales(sales);
-
-        }
+        sales.setDrugcategory(drugCategory.toString());
+        sales.setDrugname(drugName.toString());
+        sales.setPrice(price.toString());
+        sales.setQuantityrequested(quantityrequested.toString());
+        sales.setTotalbill(totalbill.toString());
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        Date date = new Date();
+        System.out.println(dateFormat.format(date));
+        sales.setDateofsale(dateFormat.format(date));
+        saveSales(sales);
         Drug drug = GeneralUtil.getUniqueDrug(drugid);
         System.out.println(drugid);
         for (int i = 0; i < drugName.size(); i++) {
@@ -130,9 +122,7 @@ public class AddSalesController extends HttpServlet {
                 Transaction tx = null;
                 try {
                     tx = session.beginTransaction();
-
                     session.save(sales);
-
                     tx.commit();
                 } catch (Exception e) {
                     if (tx != null) {

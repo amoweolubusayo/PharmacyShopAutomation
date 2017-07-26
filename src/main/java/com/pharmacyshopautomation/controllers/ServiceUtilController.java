@@ -1,6 +1,7 @@
 package main.java.com.pharmacyshopautomation.controllers;
 
 import main.java.com.pharmacyshopautomation.models.Drug;
+import main.java.com.pharmacyshopautomation.models.Sales;
 import main.java.com.pharmacyshopautomation.models.Staff;
 import main.java.com.pharmacyshopautomation.utils.GeneralUtil;
 import org.json.JSONException;
@@ -37,8 +38,18 @@ public class ServiceUtilController extends HttpServlet {
                 break;
             case 5:
                 String drugname =  request.getParameter("drugname");
+                //System.out.println(drugname);
                 output.write(fetchbyDrugName(drugname));
                 break;
+            case 6:
+                ArrayList<String> eachsaleArray = new ArrayList<String>();
+                for (int i = 0; i < 100; i++) {
+                    String eachsale = request.getParameter("eachsale");
+                    System.out.println("i got here" + eachsale);
+                    eachsaleArray.add(eachsale);
+                    output.write(fetchEachSaleDetails(eachsaleArray));
+                }
+
 
             default:
                 break;
@@ -133,6 +144,27 @@ public class ServiceUtilController extends HttpServlet {
         return res;
 
     }
+    public String fetchEachSaleDetails(ArrayList<String> eachsaleArray){
+        String res = null;
+        JSONObject eachSaleJson = new JSONObject();
+        try{
+            Sales sale = GeneralUtil.getEachSalesDetailsByTotalBill(eachsaleArray);
+            eachSaleJson.put("Name",sale.getDrugname());
+            eachSaleJson.put("Price",sale.getPrice());
+            eachSaleJson.put("Quantity",sale.getQuantityrequested());
+            eachSaleJson.put("respcode","00");
+            System.out.println(sale.getDrugname());
+            System.out.println(sale.getPrice());
+        }
+        catch (JSONException e) {
+
+            e.printStackTrace();
+            eachSaleJson.put("respCode", "99");
+        }
+        res= eachSaleJson.toString();
+        return res;
+    }
+
     public String fetchDrugList(String category){
         String resp = null;
         JSONObject druglistJson = new JSONObject();
