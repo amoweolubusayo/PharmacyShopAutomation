@@ -299,13 +299,10 @@
                         <thead class="thead-default">
                         <tr>
                             <th>S/N</th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Gender</th>
-                            <th>Marital Status</th>
-                            <th>Address</th>
-                            <th>Phonenumber</th>
-                            <th>Position</th>
+                            <th>DrugName</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+
                         </tr>
                         </thead>
                         <tbody>

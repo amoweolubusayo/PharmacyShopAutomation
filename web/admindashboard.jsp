@@ -49,9 +49,10 @@
     try
     {
         List result = GeneralUtil.getAllStaffbyId();
-        List stock = GeneralUtil.getAllDrugbyId();
+        List stock = GeneralUtil.getAllSales();
         List categoryresult = GeneralUtil.getAllDrugCategories();
         List shelflabel = GeneralUtil.getAllShelfLabels();
+        List sales = GeneralUtil.getDailySales();
         Integer lastDrugId = GeneralUtil.getLastDrugId().intValue();
         List drugres = GeneralUtil.getAllDrugbyId();
 
@@ -143,7 +144,37 @@
         </div>
     </div>
 
-    <div class="main-panel" id="addinfo">
+
+
+    <div class="main-panel" id="dashboard">
+        <div class="col-sm-12">
+
+        </div>
+        <div class="content">
+            <div class="container-fluid">
+                <div class="col-lg-3">
+                    <img src="img/drugs.jpg" class="image" style="width: 500px; height: 350px">
+                    <div class="middle">
+                        <div class="text"></div>
+                    </div>
+
+                </div>
+                <div class="col-lg-3">
+                    <div class="middle">
+                        <div class="text"></div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <img src="img/shelf2.jpg" class="" style="width: 500px; height: 350px">
+                </div>
+
+        </div>
+
+            <h1 style="text-align: center" class="animate">Handle Your Pharmacy with ease</h1>
+
+    </div>
+    </div>
+    <div class="main-panel" style="display: none" id="addinfo">
         <div class="col-sm-10 col-sm-offset-2">
 
             <h2 style="color: #1ab7ea;margin-left:10px">ADD STAFF</h2>
@@ -486,7 +517,7 @@
             <form method="post" action="/AddDrugController">
                 <div class="col-lg-4">
 
-                    <input type="text" class="form-control" name="drugid" required autocomplete="off" id="drugid" readonly/>
+                    <input type="text" class="form-control" name="drug" required autocomplete="off" id="iddrug" readonly/>
                     <input type="text" class="form-control" placeholder="Drug Name" name="drugname" required autocomplete="off"/>
                     <input type="text" class="form-control" placeholder="Manufacturer" name="manufacturer" required autocomplete="off"/>
                     <select class="form-control" name="drugcategory" required autocomplete="off">
@@ -502,7 +533,7 @@
                     </select>
                     <input type="number" class="form-control" placeholder="Drug Price" name="drugprice" required autocomplete="off"/>
                     <select class="form-control" name="druglocation" required autocomplete="off">
-                        <option value="">Select Shelf Label</option>
+                        <option value="">Select Location</option>
                         <%
                             for(int i = 0; i<shelflabel.size(); i++){
                         %>
@@ -607,7 +638,7 @@
 
                 </div>
                 <div class="col-lg-6">
-                    <input type="button" class="btn-block btn btn-lg btn-info" style="border-radius: 0px;" value="Check Details" onclick="searchDrug();"/>
+                    <input type="button" class="btn-block btn btn-lg btn-info" style="border-radius: 0px;" value="Check Details" onclick="searchDrugs();"/>
 
                     <input type="text" class="form-control" placeholder="Drug Quantity" name="drugquantity" id="drugquantity" required autocomplete="off"/>
                     <input type="text" class="form-control" placeholder="Batch Number" name="batchnumber" id="batchnumber" required autocomplete="off"/>
@@ -667,7 +698,6 @@
 
 
     </div>
-
     <div class="main-panel" style="display: none" id="addcategory">
         <div class="col-sm-10 col-sm-offset-2">
             <h2 style="color: #1ab7ea;margin-left: 10px">ADD DRUG CATEGORY</h2>
@@ -724,7 +754,6 @@
             </div>
         </div>
     </div>
-
     <div class="main-panel" style="display: none" id="addshelf">
         <div class="col-sm-10 col-sm-offset-2">
             <h2 style="color: #1ab7ea;margin-left: 10px">ADD SHELF</h2>
@@ -780,7 +809,7 @@
                 </div>
             </div>
         </div>
-
+    </div>
     <div class="main-panel" style="display: none" id="viewstock">
         <div class="col-sm-12">
             <h2 style="color: #1ab7ea;margin-left: 10px">VIEW ALL STOCK</h2>
@@ -870,38 +899,41 @@
             <h2 style="color: #1ab7ea;margin-left: 10px">GENERATE REPORT</h2>
             <form method="post">
                 <div class="col-lg-12">
+                    <form>
+                        <div class="col-lg-5">
+
+                            <select class="form-control" name="saledate" id="saledate" onchange="searchSale();clearTable();">
+                                <option value="">Select Date</option>
+                                <%
+                                    for(int i = 0; i< sales.size(); i++){
+                                %>
+                                <option value="<%=((SalesDate) sales.get(i)).getSalesdate()%>"><%=((SalesDate) sales.get(i)).getSalesdate()%></option>
+                                <%
+                                    }
+                                %>
+                            </select>
+                            <%--<input type="submit" value="ADD CATEGORY" class="btn btn-info btn-lg btn-block"/>--%>
+                        </div>
+                        <div class="col-lg-5">
+                        </div>
+                    </form>
                     <table class="table table-striped table-hover table-condensed" cellpadding="2" cellspacing="2">
                         <thead class="thead-default">
                         <tr>
-                            <th>S/N</th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Gender</th>
-                            <th>Marital Status</th>
-                            <th>Address</th>
-                            <th>Phonenumber</th>
-                            <th>Position</th>
+                            <th>Drugname</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>TotalBill</th>
                         </tr>
                         </thead>
-                        <tbody>
-                        <%
-                            for(int i = 0; i<result.size(); i++){
-                        %>
-                        <tr class="bg-info">
-                            <td><%=i+1%></td>
-                            <td><%=((Staff) result.get(i)).getStaffname()%></td>
-                            <td><%=((Staff) result.get(i)).getStaffemail()%></td>
-                            <td><%=((Staff) result.get(i)).getGender()%></td>
-                            <td><%=((Staff) result.get(i)).getMaritalstatus()%></td>
-                            <td><%=((Staff) result.get(i)).getAddress()%></td>
-                            <td><%=((Staff) result.get(i)).getPhonenumber()%></td>
-                            <td><%=((Staff) result.get(i)).getRole()%></td>
-                        </tr>
-                        <%
-                            }
-                        %>
+                        <tbody id="reportTable">
+
+
+
                         </tbody>
                     </table>
+                    <p style="color:#1ab7ea" id="totalamt">AMOUNT MADE: =N=<input type="text" style="border:none" id="moneymade"/></p>
+                    <button type="button" class="btn btn-lg btn-danger" onclick="window.print();">PRINT REPORT</button>
                 </div>
 
 
@@ -973,13 +1005,13 @@
         $.get('lastDrugId');
        var DrugId = <%=lastDrugId + 1%>;
         if(DrugId >=1 && DrugId <= 9){
-            $("#drugid")[0].value = 'DRUG00'+ DrugId;
+            $("#iddrug")[0].value = 'DRUG00'+ DrugId;
         }
         else if(DrugId >=10 && DrugId <= 99){
-            $("#drugid")[0].value = 'DRUG0'+ DrugId;
+            $("#iddrug")[0].value = 'DRUG0'+ DrugId;
         }
         else{
-            $("#drugid")[0].value = 'DRUG'+ DrugId;
+            $("#iddrug")[0].value = 'DRUG'+ DrugId;
         }
         $("#add").click(function(){
             $("#addinfo").show();
@@ -991,6 +1023,7 @@
             $("#viewstock").hide();
             $("#viewreport").hide();
             $("#addshelf").hide();
+            $("#dashboard").hide();
         });
         $("#edit").click(function(){
             $("#editinfo").show();
@@ -1001,6 +1034,7 @@
             $("#editdrug").hide();
             $("#viewstock").hide();
             $("#viewreport").hide();
+            $("#dashboard").hide();
         });
         $("#view").click(function(){
             $("#viewinfo").show();
@@ -1012,6 +1046,7 @@
             $("#viewstock").hide();
             $("#viewreport").hide();
             $("#addshelf").hide();
+            $("#dashboard").hide();
 
         });
         $("#addcat").click(function(){
@@ -1024,6 +1059,7 @@
             $("#viewstock").hide();
             $("#viewreport").hide();
             $("#addshelf").hide();
+            $("#dashboard").hide();
         });
         $("#adddrg").click(function(){
             $("#adddrug").show();
@@ -1035,6 +1071,7 @@
             $("#viewstock").hide();
             $("#viewreport").hide();
             $("#addshelf").hide();
+            $("#dashboard").hide();
 
         });
         $("#editdrg").click(function(){
@@ -1047,6 +1084,7 @@
             $("#viewstock").hide();
             $("#viewreport").hide();
             $("#addshelf").hide();
+            $("#dashboard").hide();
 
         });
         $("#viewstck").click(function(){
@@ -1059,6 +1097,7 @@
             $("#addinfo").hide();
             $("#viewreport").hide();
             $("#addshelf").hide();
+            $("#dashboard").hide();
 
         });
         $("#viewrpt").click(function(){
@@ -1071,6 +1110,7 @@
             $("#addinfo").hide();
             $("#viewstock").hide();
             $("#addshelf").hide();
+            $("#dashboard").hide();
         });
         $("#addshlf").click(function(){
             $("#addshelf").show();
@@ -1082,6 +1122,7 @@
             $("#addinfo").hide();
             $("#viewstock").hide();
             $("#viewreport").hide();
+            $("#dashboard").hide();
         });
     });
     function searchStaff(){
@@ -1112,8 +1153,37 @@
             });
         }
     }
-    function searchDrug(){
-        alert("got here");
+    function searchSale(){
+
+        var saledate = document.getElementById("saledate").value;
+        if(saledate!=""){
+            $.getJSON('/ServiceUtilController',{"operation":"7","saledate":saledate}, function (jd) {
+                var drugname = jd.Drugname;
+                var price = jd.Price;
+                var quantity = jd.Quantity;
+                var totalBill = jd.TotalBill;
+                var getTable = $('#reportTable');
+                var sum = 0;
+                for (i = 0; i < drugname.length; i++) {
+                    var drug = drugname[i];
+                    var p = price[i];
+                    var q = quantity[i];
+                    var t = totalBill[i];
+
+                    sum+=parseInt(t);
+
+                    getTable.append("<tr class='info'><td>" + drug + "</td>" + "<td>" + p + "</td>" + "<td>" + q + "</td>" + "<td>" + t + "</td>" + "</tr>");
+                }
+
+                document.getElementById("moneymade").value = sum;
+
+            });
+        }
+    }
+    function clearTable(){
+        $('#reportTable').empty();
+    }
+    function searchDrugs(){
         var drugid = document.getElementById("drugid").value;
         if(drugid!=""){
             $.getJSON('/ServiceUtilController',{"operation":"3","drugid":drugid}, function (jd) {

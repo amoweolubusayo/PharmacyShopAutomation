@@ -29,7 +29,7 @@ public class AddDrugController extends HttpServlet {
         RequestDispatcher rd = null;
         response.addHeader("Cache-Control", "no-cache");
         session= request.getSession();
-        String drugid = request.getParameter("drugid");
+        String drugid = request.getParameter("drug");
         String drugname = request.getParameter("drugname");
         String manufacturer = request.getParameter("manufacturer");
         String drugcategory = request.getParameter("drugcategory");
@@ -50,7 +50,7 @@ public class AddDrugController extends HttpServlet {
         SimpleDateFormat formatter2 = new SimpleDateFormat("yyyy-mm-dd");
         Date expdate = null;
         try {
-            expdate = formatter2.parse(productiondate);
+            expdate = formatter2.parse(expirydate);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -58,7 +58,7 @@ public class AddDrugController extends HttpServlet {
         SimpleDateFormat formatter3 = new SimpleDateFormat("yyyy-mm-dd");
         Date regdate = null;
         try {
-            regdate = formatter3.parse(productiondate);
+            regdate = formatter3.parse(registrationdate);
         } catch (ParseException e) {
             e.printStackTrace();
         }

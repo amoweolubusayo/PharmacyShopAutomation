@@ -2,6 +2,7 @@ package main.java.com.pharmacyshopautomation.controllers;
 
 import main.java.com.pharmacyshopautomation.models.Drug;
 import main.java.com.pharmacyshopautomation.models.Sales;
+import main.java.com.pharmacyshopautomation.models.SalesDate;
 import main.java.com.pharmacyshopautomation.utils.GeneralUtil;
 import main.java.persistence.HibernateUtil;
 import org.hibernate.Session;
@@ -100,9 +101,11 @@ public class AddSalesController extends HttpServlet {
         sales.setQuantityrequested(quantityrequested.toString());
         sales.setTotalbill(totalbill.toString());
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        DateFormat dateFormathelper = new SimpleDateFormat("yyyy/MM/dd");
         Date date = new Date();
         System.out.println(dateFormat.format(date));
         sales.setDateofsale(dateFormat.format(date));
+        sales.setHelperdate(dateFormathelper.format(date));
         saveSales(sales);
         Drug drug = GeneralUtil.getUniqueDrug(drugid);
         System.out.println(drugid);
@@ -110,6 +113,35 @@ public class AddSalesController extends HttpServlet {
             drug.setQuantity(leftover.get(i));
             updateDrug(drug);
         }
+        SalesDate salesDate = new SalesDate();
+        DateFormat dateFormat2 = new SimpleDateFormat("yyyy/MM/dd");
+        Date date2 = new Date();
+        System.out.println(dateFormat2.format(date2));
+
+        salesDate.setSalesdate(dateFormat2.format(date2));
+        try{
+            System.out.println("i got here ooo first time");
+            if(GeneralUtil.checkIfSalesDateExists(dateFormat2.format(date2))){
+                System.out.println("i got here ooo");
+                System.out.println("did not save");
+//                updateSalesDate(salesDate);
+
+                request.setAttribute("issues", "Sale Successfully Recorded");
+                rd = request.getRequestDispatcher("attendantdashboard.jsp");
+                rd.forward(request, response);
+                return;
+            }
+
+        }
+        catch (Exception e){
+           request.setAttribute("issues", e.getMessage());
+           rd = request.getRequestDispatcher("attendantdashboard.jsp");
+           rd.forward(request, response);
+           return;
+        }
+
+        saveSalesDate(salesDate);
+
 
         request.setAttribute("issues", "Sale Successfully Recorded");
         rd = request.getRequestDispatcher("attendantdashboard.jsp");
@@ -138,6 +170,50 @@ public class AddSalesController extends HttpServlet {
             }
 
         }
+    public static void saveSalesDate(SalesDate salesDate){
+        try{
+            Session session = HibernateUtil.getSessionFactory().openSession();
+            Transaction tx = null;
+            try {
+                tx = session.beginTransaction();
+                session.save(salesDate);
+                tx.commit();
+            } catch (Exception e) {
+                if (tx != null) {
+                    tx.rollback();
+                }
+                e.printStackTrace();
+                System.err.println("Beans!!!");
+            } finally {
+                session.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+    public static void updateSalesDate(SalesDate salesDate){
+        try{
+            Session session = HibernateUtil.getSessionFactory().openSession();
+            Transaction tx = null;
+            try {
+                tx = session.beginTransaction();
+                session.update(salesDate);
+                tx.commit();
+            } catch (Exception e) {
+                if (tx != null) {
+                    tx.rollback();
+                }
+                e.printStackTrace();
+                System.err.println("Beans!!!");
+            } finally {
+                session.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
     public static void updateDrug(Drug drug){
         try{
             Session session = HibernateUtil.getSessionFactory().openSession();

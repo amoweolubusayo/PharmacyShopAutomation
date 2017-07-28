@@ -41,6 +41,10 @@ public class ServiceUtilController extends HttpServlet {
                 //System.out.println(drugname);
                 output.write(fetchbyDrugName(drugname));
                 break;
+            case 7:
+                String saledate =  request.getParameter("saledate");
+                output.write(fetchbyhelperdate(saledate));
+                break;
             case 6:
                 ArrayList<String> eachsaleArray = new ArrayList<String>();
                 for (int i = 0; i < 100; i++) {
@@ -141,6 +145,49 @@ public class ServiceUtilController extends HttpServlet {
             drugnameJson.put("respCode", "99");
         }
         res= drugnameJson.toString();
+        return res;
+
+    }
+    public String fetchbyhelperdate(String saledate){
+        String res = null;
+        JSONObject saleDateJson = new JSONObject();
+        List<String> DrugNameArray = new ArrayList<>();
+        List<String> PriceArray = new ArrayList<>();
+        List<String> QuantityArray = new ArrayList<>();
+        List<String> TotalBillArray = new ArrayList<>();
+        try{
+            List<Sales> sales = GeneralUtil.getSalesByHelperDate(saledate);
+            for(int i = 0; i< sales.size() ; i++) {
+                System.out.println("this is the size" + sales);
+                String drugname = sales.get(i).getDrugname().replace("[","").replace("]","");
+                DrugNameArray.add(drugname);
+                String price = sales.get(i).getPrice().replace("[","").replace("]","");
+                PriceArray.add(price);
+                String quantity = sales.get(i).getQuantityrequested().replace("[","").replace("]","");
+                QuantityArray.add(quantity);
+                String totalbill = sales.get(i).getTotalbill().replace("[","").replace("]","");
+                TotalBillArray.add(totalbill);
+            }
+            try {
+                saleDateJson.put("Drugname", DrugNameArray);
+                saleDateJson.put("Price", PriceArray);
+                saleDateJson.put("Quantity", QuantityArray);
+                saleDateJson.put("TotalBill", TotalBillArray);
+                saleDateJson.put("respcode", "00");
+                System.out.println(DrugNameArray);
+                System.out.println(PriceArray);
+            }
+            catch (JSONException e){
+                e.printStackTrace();
+            }
+
+        }
+        catch (JSONException e) {
+
+            e.printStackTrace();
+            saleDateJson.put("respCode", "99");
+        }
+        res= saleDateJson.toString();
         return res;
 
     }

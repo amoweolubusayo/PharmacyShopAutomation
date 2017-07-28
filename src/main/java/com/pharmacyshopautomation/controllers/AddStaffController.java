@@ -77,7 +77,7 @@ public class AddStaffController extends HttpServlet {
         user.setUsername(username);
         user.setPassword(password);
         user.setRoletype(roletype);
-        user.isEnabled(true);
+        user.setEnabled(true);
         try {
             Session session = HibernateUtil.getSessionFactory().openSession();
             Transaction tx = null;

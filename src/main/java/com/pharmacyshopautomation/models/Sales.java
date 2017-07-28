@@ -46,6 +46,16 @@ public class Sales {
     public String totalbill;
     public String dateofsale;
 
+    public String getHelperdate() {
+        return helperdate;
+    }
+
+    public void setHelperdate(String helperdate) {
+        this.helperdate = helperdate;
+    }
+
+    public String helperdate;
+
 
 
 

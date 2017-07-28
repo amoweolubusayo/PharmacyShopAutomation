@@ -22,5 +22,6 @@
     <mapping class="main.java.com.pharmacyshopautomation.models.Role" />
     <mapping class="main.java.com.pharmacyshopautomation.models.Sales" />
     <mapping class="main.java.com.pharmacyshopautomation.models.Shelf" />
+    <mapping class="main.java.com.pharmacyshopautomation.models.SalesDate" />
   </session-factory>
 </hibernate-configuration>

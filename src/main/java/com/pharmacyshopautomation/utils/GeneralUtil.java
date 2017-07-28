@@ -8,6 +8,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -37,6 +38,7 @@ public class GeneralUtil {
 
         return user;
     }
+
     public static boolean checkForUsernameandPassword(String username, String password) {
         boolean result = false;
         Session session = HibernateUtil.getSessionFactory().openSession();
@@ -71,6 +73,28 @@ public class GeneralUtil {
             Query query = session.createQuery("from Staff r  where r.staffusername=:staffusername");
             query.setParameter("staffusername", staffusername);
             Staff e = (Staff) query.uniqueResult();
+            if (e != null) {
+                result = true;
+            }
+
+        } catch (Exception ex) {
+            if (tx != null) {
+                tx.rollback();
+            }
+        } finally {
+            session.close();
+        }
+        return result;
+    }
+    public static boolean checkIfSalesDateExists(String salesdate) {
+        boolean result = false;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            Query query = session.createQuery("from SalesDate r  where r.salesdate=:salesdate");
+            query.setParameter("salesdate", salesdate);
+            SalesDate e = (SalesDate) query.uniqueResult();
             if (e != null) {
                 result = true;
             }
@@ -129,6 +153,7 @@ public class GeneralUtil {
         }
         return result;
     }
+
 
     public static List getAllStaffbyId(){
         List result = new ArrayList();
@@ -189,6 +214,40 @@ public class GeneralUtil {
         try{
             tx = session.beginTransaction();
             String hql = "FROM Drug ";
+            Query query = session.createQuery(hql);
+            result = query.list();
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return result;
+    }
+    public static List getAllSales(){
+        List result = new ArrayList();
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+        try{
+            tx = session.beginTransaction();
+            String hql = "FROM Drug ";
+            Query query = session.createQuery(hql);
+            result = query.list();
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return result;
+    }
+    public static List getDailySales(){
+        List result = new ArrayList();
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+        try{
+            tx = session.beginTransaction();
+            String hql = "FROM SalesDate ";
             Query query = session.createQuery(hql);
             result = query.list();
         }
@@ -321,9 +380,7 @@ public class GeneralUtil {
             Query query = session.createQuery(hql);
             query.setParameter("staffid", staffid);
             staff = (Staff) query.list().get(0);
-
             System.out.println("got here first");
-
         } catch (Exception ex) {
             if (tx != null) {
                 tx.rollback();
@@ -344,9 +401,7 @@ public class GeneralUtil {
             Query query = session.createQuery(hql);
             query.setParameter("drugid", drugid);
             drug = (Drug) query.list().get(0);
-
             System.out.println("got here first");
-
         } catch (Exception ex) {
             if (tx != null) {
                 tx.rollback();
@@ -379,6 +434,29 @@ public class GeneralUtil {
         }
 
         return drug;
+    }
+    public static List<Sales> getSalesByHelperDate(String saledate) {
+        List<Sales> saleDate = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            String hql = "FROM Sales u where u.helperdate =:saledate";
+            Query query = session.createQuery(hql);
+            query.setParameter("saledate", saledate);
+            saleDate = query.list();
+
+            System.out.println("got here first");
+
+        } catch (Exception ex) {
+            if (tx != null) {
+                tx.rollback();
+            }
+        } finally {
+            session.close();
+        }
+
+        return saleDate;
     }
     public static Sales getEachSalesDetailsByTotalBill(ArrayList<String> eachsale) {
         Sales sales = null;
