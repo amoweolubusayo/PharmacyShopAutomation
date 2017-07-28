@@ -1,6 +1,9 @@
 <%@ page import="java.util.List" %>
 <%@ page import="main.java.com.pharmacyshopautomation.utils.GeneralUtil" %>
 <%@ page import="main.java.com.pharmacyshopautomation.models.*" %>
+<%@ page import="java.text.DateFormat" %>
+<%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="java.util.Date" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <html>
@@ -49,11 +52,14 @@
         }
     try
     {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        Date date = new Date();
         String totalbill = "";
         List result = GeneralUtil.getAllBills();
         List categoryresult = GeneralUtil.getAllDrugCategories();
         Integer lastDrugId = GeneralUtil.getLastDrugId().intValue();
         List drugres = GeneralUtil.getAllDrugbyId();
+        List currdate = GeneralUtil.getSalesByCurrentDate(dateFormat.format(date));
 
 %>
 
@@ -306,22 +312,20 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <%--<%--%>
-                            <%--for(int i = 0; i<result.size(); i++){--%>
-                        <%--%>--%>
-                        <%--<tr class="bg-info">--%>
-                            <%--<td><%=i+1%></td>--%>
-                            <%--<td><%=((Staff) result.get(i)).getStaffname()%></td>--%>
-                            <%--<td><%=((Staff) result.get(i)).getStaffemail()%></td>--%>
-                            <%--<td><%=((Staff) result.get(i)).getGender()%></td>--%>
-                            <%--<td><%=((Staff) result.get(i)).getMaritalstatus()%></td>--%>
-                            <%--<td><%=((Staff) result.get(i)).getAddress()%></td>--%>
-                            <%--<td><%=((Staff) result.get(i)).getPhonenumber()%></td>--%>
-                            <%--<td><%=((Staff) result.get(i)).getRole()%></td>--%>
-                        <%--</tr>--%>
-                        <%--<%--%>
-                            <%--}--%>
-                        <%--%>--%>
+                        <%
+                            for(int i = 0; i<currdate.size(); i++){
+
+                        %>
+                        <tr class="bg-info">
+                            <td><%=i+1%></td>
+                            <td><%=((Sales) currdate.get(i)).getDrugname()%></td>
+                            <td><%=((Sales) currdate.get(i)).getPrice()%></td>
+                            <td><%=((Sales) currdate.get(i)).getQuantityrequested()%></td>
+
+                        </tr>
+                        <%
+                            }
+                        %>
                         </tbody>
                     </table>
                 </div>
@@ -382,7 +386,7 @@
     </div>
     <div class="main-panel" style="display: none" id="restock">
         <div class="col-sm-10 col-sm-offset-2">
-            <h2 style="color: #1ab7ea;margin-left: 10px">ADD DRUG CATEGORY</h2>
+            <h2 style="color: #1ab7ea;margin-left: 10px">RESTOCK</h2>
             <form action="/AddDrugCategoryController" method="post">
                 <div class="col-lg-5">
 
@@ -449,7 +453,7 @@
 
 <script>
     $(document).ready(function(){
-
+//        searchSales();
         var issuesPresent = document.getElementById("info").innerHTML;
         if (issuesPresent != "")
             $("#myModalDialog").modal('show');
@@ -476,6 +480,51 @@
             $("#sell").hide();
         });
     });
+
+    function searchSales(){
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth()+1; //January is 0!
+        var yyyy = today.getFullYear();
+
+        if(dd<10) {
+            dd = '0'+dd
+        }
+
+        if(mm<10) {
+            mm = '0'+mm
+        }
+
+        today = yyyy + '/' + mm + '/' + dd;
+        alert(today);
+        var currentdate = today;
+        if(currentdate!=""){
+            $.getJSON('/ServiceUtilController',{"operation":"8","currentdate":currentdate}, function (jd) {
+
+                var drugname = jd.Drugname;
+                var price = jd.Price;
+                var quantity = jd.Quantity;
+                var totalBill = jd.TotalBill;
+                var getTable = $('#reportTable');
+                var sum = 0;
+                for (i = 0; i < drugname.length; i++) {
+                    var drug = drugname[i];
+                    alert(drug);
+                    var p = price[i];
+                    var q = quantity[i];
+                    var t = totalBill[i];
+
+                    sum+=parseInt(t);
+
+                    getTable.append("<tr class='info'><td>" + drug + "</td>" + "<td>" + p + "</td>" + "<td>" + q + "</td>" + "<td>" + t + "</td>" + "</tr>");
+                }
+
+                document.getElementById("moneymade").value = sum;
+
+            });
+        }
+    }
+
     function availabilityCheck(){
         var drugname =  document.getElementById("search").value;
       drugname.toUpperCase();
