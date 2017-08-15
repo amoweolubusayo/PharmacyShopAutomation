@@ -45,6 +45,10 @@ public class ServiceUtilController extends HttpServlet {
                 String saledate =  request.getParameter("saledate");
                 output.write(fetchbyhelperdate(saledate));
                 break;
+            case 8:
+                String currentdate =  request.getParameter("currentdate");
+                output.write(fetchbycurrentdate(currentdate));
+                break;
             case 6:
                 ArrayList<String> eachsaleArray = new ArrayList<String>();
                 for (int i = 0; i < 100; i++) {
@@ -155,8 +159,61 @@ public class ServiceUtilController extends HttpServlet {
         List<String> PriceArray = new ArrayList<>();
         List<String> QuantityArray = new ArrayList<>();
         List<String> TotalBillArray = new ArrayList<>();
+        List<String> TimeArray = new ArrayList<>();
+        List<String> SoldByArray = new ArrayList<>();
         try{
             List<Sales> sales = GeneralUtil.getSalesByHelperDate(saledate);
+            for(int i = 0; i< sales.size() ; i++) {
+                System.out.println("this is the size" + sales);
+                String drugname = sales.get(i).getDrugname().replace("[","").replace("]","");
+                DrugNameArray.add(drugname);
+                String price = sales.get(i).getPrice().replace("[","").replace("]","");
+                PriceArray.add(price);
+                String quantity = sales.get(i).getQuantityrequested().replace("[","").replace("]","");
+                QuantityArray.add(quantity);
+                String totalbill = sales.get(i).getTotalbill().replace("[","").replace("]","");
+                TotalBillArray.add(totalbill);
+                String time = sales.get(i).getDateofsale().substring(11,16);
+                TimeArray.add(time);
+                String soldby = sales.get(i).getSoldby().toUpperCase();
+                SoldByArray.add(soldby);
+            }
+            try {
+                saleDateJson.put("Drugname", DrugNameArray);
+                saleDateJson.put("Price", PriceArray);
+                saleDateJson.put("Quantity", QuantityArray);
+                saleDateJson.put("TotalBill", TotalBillArray);
+                saleDateJson.put("Time", TimeArray);
+                saleDateJson.put("Soldby", SoldByArray);
+                saleDateJson.put("respcode", "00");
+                System.out.println(DrugNameArray);
+                System.out.println(PriceArray);
+            }
+            catch (JSONException e){
+                e.printStackTrace();
+            }
+
+        }
+        catch (JSONException e) {
+
+            e.printStackTrace();
+            saleDateJson.put("respCode", "99");
+        }
+        res= saleDateJson.toString();
+        return res;
+
+    }
+
+
+    public String fetchbycurrentdate(String saledate){
+        String res = null;
+        JSONObject saleDateJson = new JSONObject();
+        List<String> DrugNameArray = new ArrayList<>();
+        List<String> PriceArray = new ArrayList<>();
+        List<String> QuantityArray = new ArrayList<>();
+        List<String> TotalBillArray = new ArrayList<>();
+        try{
+            List<Sales> sales = GeneralUtil.getSalesByCurrentDate(saledate);
             for(int i = 0; i< sales.size() ; i++) {
                 System.out.println("this is the size" + sales);
                 String drugname = sales.get(i).getDrugname().replace("[","").replace("]","");
@@ -191,6 +248,7 @@ public class ServiceUtilController extends HttpServlet {
         return res;
 
     }
+
     public String fetchEachSaleDetails(ArrayList<String> eachsaleArray){
         String res = null;
         JSONObject eachSaleJson = new JSONObject();

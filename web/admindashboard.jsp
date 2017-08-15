@@ -90,6 +90,10 @@
         <div class="sidebar-wrapper">
             <ul class="nav">
                 <li class="active">
+                    <a href="#" style="text-decoration: none;" id=""><b>HI <%=user_id%></b></a></li>
+                </li>
+                <hr>
+                <li class="active">
 
                     <a data-toggle="collapse" data-target="#staff"> Staff <i class="fa fa-caret-down"></i></a>
                     <ul id="staff" class="collapse">
@@ -549,7 +553,7 @@
                     <input type="text" class="form-control" placeholder="Batch Number" name="batchnumber" required autocomplete="off"/>
                     <input type="text" class="form-control" placeholder="Function" name="function" required autocomplete="off"/>
                     <input placeholder="Production date" class="form-control" type="text" onfocus="(this.type='date')" onblur="(this.type='text')" id="productiondate" name="productiondate">
-                    <input placeholder="Expiry date" class="form-control" type="text" onfocus="(this.type='date')" onblur="(this.type='text')" id="expirydate" name="expirydate">
+                    <input placeholder="Expiry date" class="form-control" type="text" onfocus="(this.type='date')" onblur="(this.type='text');checkExpiryDateVsProductionDate()" id="expirydate" name="expirydate">
                     <input placeholder="Registration date" class="form-control" type="text" onfocus="(this.type='date')" onblur="(this.type='text')" id="registrationdate" name="registrationdate">
                 </div>
 
@@ -924,6 +928,8 @@
                             <th>Price</th>
                             <th>Quantity</th>
                             <th>TotalBill</th>
+                            <th>Time Of Sale</th>
+                            <th>Sold by</th>
                         </tr>
                         </thead>
                         <tbody id="reportTable">
@@ -993,7 +999,19 @@
 <script src="js/demo.js"></script>
 <script>
     $(document).ready(function(){
+        <%
+                        for(int i = 0; i<stock.size(); i++){
+          %>
+        var drugquantityleft = <%=((Drug) stock.get(i)).getQuantity()%>;
 
+        if(drugquantityleft < 25){
+            alert("You need to restock" + <%=((Drug) stock.get(i)).getDrugname()%>);
+        }
+        else
+            alert(" ");
+        <%
+                            }
+                        %>
         var issuesPresent = document.getElementById("info").innerHTML;
         if(issuesPresent !="")
             $ ("#myModalDialog").modal('show');
@@ -1153,6 +1171,19 @@
             });
         }
     }
+    function checkExpiryDateVsProductionDate(){
+        alert('got here');
+        var exp = document.getElementById('expirydate');
+        var prod = document.getElementById('productiondate');
+        alert(Date.parse(exp));
+        alert(Date.parse(prod));
+        if(exp < prod){
+            alert('check the expiry date you are picking, there seems to be a mistake' +
+                'production date shouldnt be more than the expiry date');
+            document.getElementById('expirydate').value = '';
+        }
+
+    }
     function searchSale(){
 
         var saledate = document.getElementById("saledate").value;
@@ -1162,6 +1193,8 @@
                 var price = jd.Price;
                 var quantity = jd.Quantity;
                 var totalBill = jd.TotalBill;
+                var time = jd.Time;
+                var soldby = jd.Soldby;
                 var getTable = $('#reportTable');
                 var sum = 0;
                 for (i = 0; i < drugname.length; i++) {
@@ -1169,10 +1202,12 @@
                     var p = price[i];
                     var q = quantity[i];
                     var t = totalBill[i];
+                    var tm = time[i];
+                    var s = soldby[i];
 
                     sum+=parseInt(t);
 
-                    getTable.append("<tr class='info'><td>" + drug + "</td>" + "<td>" + p + "</td>" + "<td>" + q + "</td>" + "<td>" + t + "</td>" + "</tr>");
+                    getTable.append("<tr class='info'><td>" + drug + "</td>" + "<td>" + p + "</td>" + "<td>" + q + "</td>" + "<td>" + t + "</td>" + "<td>" + tm + "</td> " +  "<td>" + s + "</td> "+" </tr>");
                 }
 
                 document.getElementById("moneymade").value = sum;

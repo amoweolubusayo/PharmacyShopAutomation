@@ -7,6 +7,8 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -458,6 +460,31 @@ public class GeneralUtil {
 
         return saleDate;
     }
+
+    public static List<Sales> getSalesByCurrentDate(String currentdate) {
+        List<Sales> saleDate = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            String hql = "FROM Sales u where u.helperdate =:currentdate";
+            Query query = session.createQuery(hql);
+            query.setParameter("currentdate", currentdate);
+            saleDate = query.list();
+
+            System.out.println("got here first");
+
+        } catch (Exception ex) {
+            if (tx != null) {
+                tx.rollback();
+            }
+        } finally {
+            session.close();
+        }
+
+        return saleDate;
+    }
+
     public static Sales getEachSalesDetailsByTotalBill(ArrayList<String> eachsale) {
         Sales sales = null;
         Session session = HibernateUtil.getSessionFactory().openSession();

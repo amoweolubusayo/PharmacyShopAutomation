@@ -45,6 +45,15 @@ public class Sales {
 
     public String totalbill;
     public String dateofsale;
+    public String soldby;
+
+    public String getSoldby() {
+        return soldby;
+    }
+
+    public void setSoldby(String soldby) {
+        this.soldby = soldby;
+    }
 
     public String getHelperdate() {
         return helperdate;

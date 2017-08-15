@@ -54,6 +54,7 @@
     {
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
         Date date = new Date();
+        String time = new SimpleDateFormat("H:mm").format(date);
         String totalbill = "";
         List result = GeneralUtil.getAllBills();
         List categoryresult = GeneralUtil.getAllDrugCategories();
@@ -94,7 +95,10 @@
 
         <div class="sidebar-wrapper">
             <ul class="nav">
-
+                <li class="active">
+                    <a href="#" style="text-decoration: none;" id=""><b>HI <%=user_id%></b></a></li>
+                </li>
+                <hr>
 
                 <li class="active">
 
@@ -102,7 +106,7 @@
                     <ul id="drug" class="collapse">
                         <li class="active nav" style="margin-left: 50px"><i class="fa fa-plus" style="color: white"></i>
                             <a href="#selldrug" style="text-decoration: none" id="selldrug">Sell</a></li>
-                        <li class="active nav" style="margin-left: 50px"><i class="fa fa-plus" style="color: white"></i>
+                        <li class="active nav" style="margin-left: 50px"><i class="fa fa-eye" style="color: white"></i>
                             <a href="#viewdrug" style="text-decoration: none" id="viewdrug">View</a></li>
                         <li class="active nav" style="margin-left: 50px"><i class="fa fa-wrench" style="color: white"></i>
                             <a href="#restockdrug" style="text-decoration: none" id="restockdrug">Restock</a></li>
@@ -118,38 +122,38 @@
             </ul>
         </div>
     </div>
-
     <div class="main-panel" id="sell">
         <div class="col-sm-12 col-sm-offset-0">
-            <div class="col-sm-5">
-                <h2 style="color: #1ab7ea;margin-left:10px">SELL DRUG</h2>
-            </div>
-            <div class="col-sm-2" style="float: right">
-                <ul class="nav navbar-nav navbar-right" style="float: left">
-                    <li>
-                        <input type="text" name="search" id="search" placeholder="Search for Drug" class="form-control" />
-                    <span class="glyphicon glyphicon-search"></span>
-                    </li>
-                </ul>
-                    <%--<li>--%>
-                        <%--<button type="button" class="btn btn-xs btn-info" onclick="availabilityCheck()">--%>
-                            <%--<span class="glyphicon glyphicon-search"></span>--%>
-                            <%--Search--%>
-                        <%--</button>--%>
-                    <%--</li>--%>
+
+                <h2 style="color: #1ab7ea;">SELL DRUG</h2>
 
 
 
-                <p style="color:#1ab7ea; margin-left: 20px">AVAILABLE: <input type="text" name="random" id="random" style="border:none"/></p>
+            <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <input type="text" name="search" id="search" placeholder="Search for Drug" class="form-control" />
+                        </li>
+                        <li>
+                            <button class="btn btn-sm btn-info glyphicon glyphicon-search" style="margin-top: 30px" onclick="availabilityCheck()"></button>
+                        </li>
+                <p style="
+                color:#1ab7ea;">AVAILABLE: <input type="text" name="random" id="random" style="border:none"/></p>
+                    </ul>
 
-            </div>
+
+
+                    <%--<ul class="nav navbar-nav navbar-right">--%>
+                       <%----%>
+                    <%--</ul>--%>
+
 
 
 
             <form method="post" action="/AddSalesController">
+                <input type="hidden" value="<%=user_id%>" name="user_id"/>
                 <div class="col-lg-6">
                         <br/>
-                    <select class="form-control" name="drugcategory" id="drugcategory" required autocomplete="off" onchange="searchDrugList();clr();">
+                    <select class="form-control" name="drugcategory" id="drugcategory"  autocomplete="off" onchange="searchDrugList();clr();" required="required">
                         <option value="">Select Drug Category</option>
                         <%
                             for(int i = 0; i<categoryresult.size(); i++){
@@ -160,24 +164,24 @@
                         %>
 
                     </select>
-                    <select class="form-control" name="drugname" id="drugname" onchange="searchDrug();clr();">
+                    <select class="form-control" name="drugname" id="drugname" onchange="searchDrug();clr();" required="required">
                         <option>Select</option>
                     </select>
                     <br/>
 
-                    <p style="color:#1ab7ea" name="drugid">DRUG ID: <input type="text" name="drugid" id="drugid" style="border:none"/></p>
+                    <p style="color:#1ab7ea" name="drugid">DRUG ID: <input type="text" name="drugid" id="drugid" style="border:none" readonly/></p>
                     <br/>
-                    <p style="color:#1ab7ea" name="quantity">AVAIL QUANTITY: <input type="text" name="quantity" id="quantity" style="border:none"/></p>
+                    <p style="color:#1ab7ea" name="quantity">AVAIL QUANTITY: <input type="text" name="quantity" id="quantity" style="border:none" readonly/></p>
                     <br/>
-                    <p style="color:#1ab7ea" name="price">DRUG PRICE: <input type="text" name="price" id="price" style="border:none"/></p>
+                    <p style="color:#1ab7ea" name="price">DRUG PRICE: <input type="text" name="price" id="price" style="border:none"readonly/></p>
                     <br/>
-                    <p style="color:#1ab7ea" name="druglocation">DRUG LOCATION: <input type="text" name="druglocation" id="druglocation" style="border:none"/></p>
+                    <p style="color:#1ab7ea" name="druglocation">DRUG LOCATION: <input type="text" name="druglocation" id="druglocation" style="border:none" readonly/></p>
                     <br/>
-                    <p style="color:#1ab7ea" id="expdate">EXPIRY DATE: <input type="text" name="expdate" id="expirydate" style="border:none"/></p>
+                    <p style="color:#1ab7ea" id="expdate">EXPIRY DATE: <input type="text" name="expdate" id="expirydate" style="border:none" readonly/></p>
                     <br/>
-                    <input type="number" class="form-control" placeholder="Enter quantity requested" name="quantityrequested" id="quantityrequested" required autocomplete="off" onkeyup="getTotal()"/>
+                    <input type="number" class="form-control" placeholder="Enter quantity requested" name="quantityrequested" id="quantityrequested" autocomplete="off" onkeyup="getTotal()" aria-required="true" onblur="nosaleAboveStock()" required="required"/>
                     <br/>
-                    <p style="color:#1ab7ea" id="totalamt">AMOUNT: <input type="text" name="total" id="total" style="border:none"/></p>
+                    <p style="color:#1ab7ea" id="totalamt">AMOUNT: <input type="text" name="total" id="total" style="border:none" readonly/></p>
 
                     <table class="table table-hover table-condensed" cellpadding="2" cellspacing="2" id="">
                         <thead class="thead-default">
@@ -200,54 +204,54 @@
                     <p style="color:#1ab7ea" id=""> BILL:
                         <input type="text" name="totalbill" id="totalbill" style="border:none"/></p>
                     <input type="submit" value="SELL" class="btn btn-info" onclick=""/>
-                    <input type="button" value="ADD TO BILL" class="btn btn-warning" onclick="addtobill();S"/>
+                    <input type="button" value="ADD TO BILL" class="btn btn-warning" onclick="addtobill();"/>
                 </div>
                 <br/>
                 <div class="col-lg-6">
                     <br/>
-                    <table class="table table-hover table-condensed" cellpadding="2" cellspacing="2">
-                        <thead class="thead-default">
-                        <tr>
-                            <th>S/N</th>
-                            <th>PRICE</th>
-                            <th>DRUGS SOLD</th>
-                        </tr>
-                        </thead>
-                        <tfoot>
-                        <tr>
-                            <%
-                                int sum =0 ;
-                                for(int i = 0; i<result.size(); i++){
-                                    sum += Integer.parseInt(((Sales) result.get(i)).getTotalbill());
-                            %>
-                            <%
-                                }
-                            %>
-                            <th>SUM</th>
-                            <th><%=sum%></th>
-                        </tr>
+                    <%--<table class="table table-hover table-condensed" cellpadding="2" cellspacing="2">--%>
+                        <%--<thead class="thead-default">--%>
+                        <%--<tr>--%>
+                            <%--<th>S/N</th>--%>
+                            <%--<th>PRICE</th>--%>
+                            <%--<th>DRUGS SOLD</th>--%>
+                        <%--</tr>--%>
+                        <%--</thead>--%>
+                        <%--<tfoot>--%>
+                        <%--<tr>--%>
+                            <%--<%--%>
+                                <%--int sum =0 ;--%>
+                                <%--for(int i = 0; i<result.size(); i++){--%>
+                                    <%--sum += Integer.parseInt(((Sales) result.get(i)).getTotalbill());--%>
+                            <%--%>--%>
+                            <%--<%--%>
+                                <%--}--%>
+                            <%--%>--%>
+                            <%--<th>SUM</th>--%>
+                            <%--<th><%=sum%></th>--%>
+                        <%--</tr>--%>
 
-                        </tfoot>
+                        <%--</tfoot>--%>
 
-                        <tbody id="salestable">
+                        <%--<tbody id="salestable">--%>
 
-                        <%
-                            for(int i = 0; i<result.size(); i++){
+                        <%--<%--%>
+                            <%--for(int i = 0; i<result.size(); i++){--%>
 
-                        %>
-                        <tr class="bg-info">
-                            <td><%=i+1%></td>
+                        <%--%>--%>
+                        <%--<tr class="bg-info">--%>
+                            <%--<td><%=i+1%></td>--%>
 
-                            <td class="eachsale" onclick="eachSaleDetails();"> <%=((Sales) result.get(i)).getTotalbill()%></td>
-                            <td onclick="eachSaleDetails();"> <%=((Sales) result.get(i)).getDrugname().replace("[","").replace("]","")%></td>
+                            <%--<td class="eachsale" onclick="eachSaleDetails();"> <%=((Sales) result.get(i)).getTotalbill()%></td>--%>
+                            <%--<td onclick="eachSaleDetails();"> <%=((Sales) result.get(i)).getDrugname().replace("[","").replace("]","")%></td>--%>
 
-                        </tr>
-                        <%
-                            }
-                        %>
-                        </tbody>
+                        <%--</tr>--%>
+                        <%--<%--%>
+                            <%--}--%>
+                        <%--%>--%>
+                        <%--</tbody>--%>
 
-                    </table>
+                    <%--</table>--%>
 
                 </div>
   </form>
@@ -299,15 +303,17 @@
     <div class="main-panel" style="display: none" id="view">
         <div class="col-sm-12">
             <h2 style="color: #1ab7ea;margin-left: 10px">VIEW ALL SALES</h2>
+            <h3 style="color: #1ab7ea;margin-left: 10px"><%=dateFormat.format(date)%></h3>
             <form method="post">
                 <div class="col-lg-12">
                     <table class="table table-striped table-hover table-condensed" cellpadding="2" cellspacing="2">
                         <thead class="thead-default">
                         <tr>
                             <th>S/N</th>
-                            <th>DrugName</th>
+                            <th>Drugs Sold</th>
                             <th>Price</th>
-                            <th>Quantity</th>
+                            <th>Quantity Sold</th>
+                            <th>Time Sold</th>
 
                         </tr>
                         </thead>
@@ -318,9 +324,11 @@
                         %>
                         <tr class="bg-info">
                             <td><%=i+1%></td>
-                            <td><%=((Sales) currdate.get(i)).getDrugname()%></td>
-                            <td><%=((Sales) currdate.get(i)).getPrice()%></td>
-                            <td><%=((Sales) currdate.get(i)).getQuantityrequested()%></td>
+                            <td onclick="gg();" id="dggname"><%=((Sales) currdate.get(i)).getDrugname().replace("[","").replace("]","")%></td>
+                            <td><%=((Sales) currdate.get(i)).getPrice().replace("[","").replace("]","").replace(".0","")%></td>
+                            <td><%=((Sales) currdate.get(i)).getQuantityrequested().replace("[","").replace("]","").replace(".0","")%></td>
+
+                            <td><%=((Sales) currdate.get(i)).getDateofsale().substring(11,16)%></td>
 
                         </tr>
                         <%
@@ -329,11 +337,6 @@
                         </tbody>
                     </table>
                 </div>
-
-
-
-
-
 
 
 
@@ -525,18 +528,27 @@
         }
     }
 
+
+    function gg(){
+        var dg = document.getElementById('dggname').innerHTML;
+        alert(dg);
+    }
+
     function availabilityCheck(){
         var drugname =  document.getElementById("search").value;
+
       drugname.toUpperCase();
+
         if(drugname!=""){
             $.getJSON('/ServiceUtilController',{"operation":"5","drugname":drugname}, function (jd) {
+
                 var Quantity = jd.Quantity;
-                alert(Quantity);
+
                 if(Quantity <= 50) {
                     document.getElementById('random').value = "YES, but 5 left";
                 }
-                else if(Quantity < 1){
-                    document.getElementById('random').value = "NO";
+                else if(Quantity > 50){
+                    document.getElementById('random').value = "YES";
 
                 }
                 else{
@@ -573,6 +585,22 @@
             }
 
     }
+    function nosaleAboveStock() {
+       var quantity = document.getElementById('quantity').value;
+       var quantityreq = document.getElementById('quantityrequested').value;
+       if(parseInt(quantityreq) > parseInt(quantity)){
+           alert('you cant sell more than what you have');
+           document.getElementById('quantityrequested').value = ' ';
+       }
+
+    }
+    function deleteFromBill(){
+        alert(($('.butn').length));
+        for(var i =0; i< ($('.butn').length); i++){
+
+            document.getElementById('trbill'+ i).innerHTML = ' ';
+        }
+    }
 
     function addtobill() {
             var getTable = $('#billtable');
@@ -582,7 +610,7 @@
             var quantity = document.getElementById("quantityrequested").value;
             var quant=document.getElementById("quantity").value;
             var leftover = quant - quantity;
-        getTable.append("<tr><td><input type='text' class='form-control drug_name' value='"+drugname+"' readonly/></td>"+"<td><input type='text' class='form-control drug_category' value='"+drugcategory+"' readonly/></td>"+"<td><input type='text' class='form-control q_requested' value='"+quantity+"' readonly/></td>"+"<td><input type='text' class='form-control drug_price' value='"+total+"' readonly/></td>"+"<td><input type='hidden' class='form-control left_over' value='"+leftover+"' readonly/></td>"+"</tr>");
+        getTable.append("<tr class='trbill'><td><input type='text' class='form-control drug_name' value='"+drugname+"' readonly/></td>"+"<td><input type='text' class='form-control drug_category' value='"+drugcategory+"' readonly/></td>"+"<td><input type='text' class='form-control q_requested' value='"+quantity+"' readonly/></td>"+"<td><input type='text' class='form-control drug_price' value='"+total+"' readonly/></td>"+"<td><input type='hidden' class='form-control left_over' value='"+leftover+"' readonly/></td>"+"<td><button type='button' class='btn btn-sm btn-danger glyphicon glyphicon-remove butn' onclick=''></button></td>"+"</tr>");
         var tArray = [];
         for(var i =0; i< ($('.drug_name').length); i++){
             $('.drug_name').eq(i).attr("id","dgname"+ i);
@@ -597,7 +625,8 @@
             $('.left_over').eq(i).attr("name","leftover"+ i);
             $('.sn').eq(i).attr("value",i+1);
             $('.sn').eq(i).attr("id","snumber");
-//            $('.salesid').eq(i).attr("value",1);
+            $('.trbill').eq(i).attr("id","trbill"+i);
+            $('.butn').eq(i).attr("id","butn"+1);
             $('.salesid').eq(i).attr("name","salesid");
 
             var t = document.getElementById('dgprice' + i).value;
@@ -610,10 +639,8 @@
         document.getElementById("totalbill").value= sum;
 
 
-        for (var i =1; i<= 50; i++){
-            i = document.getElementById('salesid').value;
-        }
-        alert(document.getElementById('salesid').value);
+
+
 
     }
 

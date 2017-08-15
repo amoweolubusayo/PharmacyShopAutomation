@@ -33,6 +33,8 @@ public class AddSalesController extends HttpServlet {
         session = request.getSession();
         String drugid = request.getParameter("drugid");
         String quantity = request.getParameter("quantity");
+        String userid = request.getParameter("user_id");
+        System.out.println(userid);
         ArrayList<String> drugName = new ArrayList<String>();
         String salesId = request.getParameter("salesid");
         for (int i = 0; i < 100; i++) {
@@ -92,14 +94,13 @@ public class AddSalesController extends HttpServlet {
         System.out.println("number of quantity" + quantityrequested.size());
         String totalbill = request.getParameter("totalbill");
         System.out.println(totalbill);
-
-
         Sales sales = new Sales();
         sales.setDrugcategory(drugCategory.toString());
         sales.setDrugname(drugName.toString());
         sales.setPrice(price.toString());
         sales.setQuantityrequested(quantityrequested.toString());
         sales.setTotalbill(totalbill.toString());
+        sales.setSoldby(userid);
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         DateFormat dateFormathelper = new SimpleDateFormat("yyyy/MM/dd");
         Date date = new Date();
