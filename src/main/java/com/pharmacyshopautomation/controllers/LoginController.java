@@ -1,5 +1,6 @@
 package main.java.com.pharmacyshopautomation.controllers;
 
+import main.java.com.pharmacyshopautomation.models.Drug;
 import main.java.com.pharmacyshopautomation.models.User;
 import main.java.com.pharmacyshopautomation.utils.GeneralUtil;
 
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Created by USER on 6/12/2017.
@@ -64,7 +66,6 @@ public class LoginController extends HttpServlet{
             session.setAttribute("current_user", user);
             System.out.println(current_user.getUsername());
             System.out.println(current_user.getRoletype());
-
             rd = request.getRequestDispatcher("admindashboard.jsp");
             rd.forward(request, response);
             return;
