@@ -1033,6 +1033,12 @@
                     var x =  today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
                    var f = edt.replace("-","").substring(0,6);
                    var s = x.replace("-","").substring(0,6);
+                   var randm = edt.replace("-","").substring(0,4);
+
+                   var randm2 = edt.replace("-","").substring(4,6);
+                   var randm3 = x.replace("-","").substring(0,4);
+                   var randm4 = x.replace("-","").substring(4,6);
+
                    var chkexp = parseInt(f) - parseInt(s);
 
                    if(chkexp < 0) {
@@ -1046,8 +1052,12 @@
 
                     if(parseInt(f) < parseInt(s)){
                         var k =  document.getElementById("stat" + i).innerHTML;
-                        //alert(k);
+
                         var m = "Expired";
+                        document.getElementById("stat" + i).innerHTML = m;
+                    }
+                    if((parseInt(randm) == parseInt(randm3)) && parseInt(randm4)-2 == parseInt(randm2)){
+                        var m = "Due to Expire";
                         document.getElementById("stat" + i).innerHTML = m;
                     }
                     if(document.getElementById("quantity"+ i).innerHTML < 30){
