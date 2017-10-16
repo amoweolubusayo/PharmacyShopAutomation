@@ -8,10 +8,12 @@
 <head>
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link href="css/design.css" rel="stylesheet">
+    <link href="css/sweetalert.css" rel="stylesheet">
     <link href="css/material-dashboard.css" rel="stylesheet"/>
 
     <link href="css/demo.css" rel="stylesheet" />
     <link href="css/font-awesome.css" rel="stylesheet">
+
 
 
 <style>
@@ -184,8 +186,7 @@
             <h2 style="color: #1ab7ea;margin-left:10px">ADD STAFF</h2>
 
             <form method="post" action="/AddStaffController">
-                <div class="col-lg-4
-">
+                <div class="col-lg-4">
 
                     <input type="text" class="form-control" placeholder="Enter name" name="staffname" required autocomplete="off"/>
                 <select class="form-control" name="gender" required autocomplete="off">
@@ -612,7 +613,7 @@
 
             <h2 style="color: #1ab7ea;margin-left: 10px">EDIT DRUG</h2>
 
-            <form method="post" action="">
+            <form method="post" action="/EditDrugController">
                 <div class="col-lg-6">
 
                     <select class="form-control" name="drugid" id="drugid">
@@ -830,6 +831,7 @@
                             <th>Quantity Available</th>
                             <th>Location</th>
                             <th>Expiry Date</th>
+                            <th>Status</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -838,13 +840,14 @@
                         %>
                         <tr class="bg-info">
                             <td><%=i+1%></td>
-                            <td><%=((Drug) stock.get(i)).getDrugname()%></td>
+                            <td class="name"><%=((Drug) stock.get(i)).getDrugname()%></td>
                             <td><%=((Drug) stock.get(i)).getDrugid()%></td>
                             <td><%=((Drug) stock.get(i)).getCategory()%></td>
                             <td><%=((Drug) stock.get(i)).getPrice()%></td>
-                            <td><%=((Drug) stock.get(i)).getQuantity()%></td>
+                            <td class="quantity"><%=((Drug) stock.get(i)).getQuantity()%></td>
                             <td><%=((Drug) stock.get(i)).getLocation()%></td>
-                            <td><%=((Drug) stock.get(i)).getExpdate()%></td>
+                            <td class="edate"><%=((Drug) stock.get(i)).getExpdate().toString().substring(0,10)%></td>
+                            <td class="stat" value="Not expired">Not expired</td>
                         </tr>
                         <%
                             }
@@ -997,21 +1000,70 @@
 <script src="js/material.min.js"></script>
 <script src="js/material-dashboard.js"></script>
 <script src="js/demo.js"></script>
+<script src="js/sweetalert.min.js"></script>
 <script>
     $(document).ready(function(){
-        <%
-                        for(int i = 0; i<stock.size(); i++){
-          %>
-        var drugquantityleft = <%=((Drug) stock.get(i)).getQuantity()%>;
 
-        if(drugquantityleft < 25){
-            alert("You need to restock" + <%=((Drug) stock.get(i)).getDrugname()%>);
-        }
-        else
-            alert(" ");
         <%
-                            }
-                        %>
+     for(int i = 0; i<stock.size(); i++){
+     %>
+
+
+
+        var drugquantityleft = <%=((Drug) stock.get(i)).getQuantity()%>;
+        var lent = <%=stock.size()%>
+
+
+
+        if(drugquantityleft < 30) {
+
+            setTimeout(function () {
+            var today = new Date();
+
+               // alert(today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate());
+                swal("Check your stock now, you are running out of some drugs","you will find drugs running out of stock in red","warning");
+                ;
+                for(var i = 0; i < lent; i++){
+                    $('.quantity').eq(i).attr("id","quantity"+ i);
+                    $('.name').eq(i).attr("id","name"+ i);
+                    $('.edate').eq(i).attr("id","edate"+ i);
+                    $('.stat').eq(i).attr("id","stat"+ i);
+                    //alert(document.getElementById("edate" + i).innerHTML);
+                    var edt = document.getElementById("edate" + i).innerText;
+                    var x =  today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
+                   var f = edt.replace("-","").substring(0,6);
+                   var s = x.replace("-","").substring(0,6);
+                   var chkexp = parseInt(f) - parseInt(s);
+
+                   if(chkexp < 0) {
+
+                       setTimeout(function () {
+                           swal('expired drug alert');
+
+                       }, 3000);
+
+                   }
+
+                    if(parseInt(f) < parseInt(s)){
+                        var k =  document.getElementById("stat" + i).innerHTML;
+                        //alert(k);
+                        var m = "Expired";
+                        document.getElementById("stat" + i).innerHTML = m;
+                    }
+                    if(document.getElementById("quantity"+ i).innerHTML < 30){
+                        document.getElementById("quantity"+ i).style.color = 'red';
+                        document.getElementById("quantity"+ i).style.fontWeight = 'bold';
+                        document.getElementById("name"+ i).style.color = 'red';
+                        document.getElementById("name"+ i).style.fontWeight = 'bold';
+                    }
+                }
+
+            }, 5000);
+
+        }
+        <%
+        }
+        %>
         var issuesPresent = document.getElementById("info").innerHTML;
         if(issuesPresent !="")
             $ ("#myModalDialog").modal('show');
@@ -1143,6 +1195,9 @@
             $("#dashboard").hide();
         });
     });
+
+
+
     function searchStaff(){
         var staffid = document.getElementById("staffid").value;
         if(staffid!=""){
@@ -1238,7 +1293,7 @@
                 document.getElementById("drugquantity").value =Quantity;
                 document.getElementById("manufacturer").value =Manufacturer;
                 document.getElementById("batchnumber").value =Batchno;
-                document.getElementById("category").value =Category;
+                document.getElementById("drugcategory").value =Category;
                 document.getElementById("drugfunction").value =DrugFunction;
                 document.getElementById("drugprice").value =Price;
                 document.getElementById("proddate").value = pd;
