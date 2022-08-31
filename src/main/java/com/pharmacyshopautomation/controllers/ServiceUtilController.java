@@ -155,12 +155,12 @@ public class ServiceUtilController extends HttpServlet {
     public String fetchbyhelperdate(String saledate){
         String res = null;
         JSONObject saleDateJson = new JSONObject();
-        List<String> DrugNameArray = new ArrayList<>();
-        List<String> PriceArray = new ArrayList<>();
-        List<String> QuantityArray = new ArrayList<>();
-        List<String> TotalBillArray = new ArrayList<>();
-        List<String> TimeArray = new ArrayList<>();
-        List<String> SoldByArray = new ArrayList<>();
+        List<String> DrugNameArray = new ArrayList<String>();
+        List<String> PriceArray = new ArrayList<String>();
+        List<String> QuantityArray = new ArrayList<String>();
+        List<String> TotalBillArray = new ArrayList<String>();
+        List<String> TimeArray = new ArrayList<String>();
+        List<String> SoldByArray = new ArrayList<String>();
         try{
             List<Sales> sales = GeneralUtil.getSalesByHelperDate(saledate);
             for(int i = 0; i< sales.size() ; i++) {
@@ -208,10 +208,10 @@ public class ServiceUtilController extends HttpServlet {
     public String fetchbycurrentdate(String saledate){
         String res = null;
         JSONObject saleDateJson = new JSONObject();
-        List<String> DrugNameArray = new ArrayList<>();
-        List<String> PriceArray = new ArrayList<>();
-        List<String> QuantityArray = new ArrayList<>();
-        List<String> TotalBillArray = new ArrayList<>();
+        List<String> DrugNameArray = new ArrayList<String>();
+        List<String> PriceArray = new ArrayList<String>();
+        List<String> QuantityArray = new ArrayList<String>();
+        List<String> TotalBillArray = new ArrayList<String>();
         try{
             List<Sales> sales = GeneralUtil.getSalesByCurrentDate(saledate);
             for(int i = 0; i< sales.size() ; i++) {
