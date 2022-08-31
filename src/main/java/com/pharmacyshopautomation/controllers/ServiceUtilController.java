@@ -273,7 +273,7 @@ public class ServiceUtilController extends HttpServlet {
     public String fetchDrugList(String category){
         String resp = null;
         JSONObject druglistJson = new JSONObject();
-        List<String> drugNameArray = new ArrayList<>();
+        List<String> drugNameArray = new ArrayList<String>();
         try{
             List<Drug> drugList = GeneralUtil.getDrugsBasedOnCategory(category);
             for (int i = 0; i < drugList.size(); i++) {
